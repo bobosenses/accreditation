@@ -14,7 +14,7 @@
 		<div  data-options="region:'west',title:'我的机构管理',split:true" style="width:200px;overflow: auto;">
 		   <div style="width:85px;float: left;margin-left: 8px;margin-top: 2px;">
 			<a  icon="icon-add" class="easyui-linkbutton l-btn l-btn-plain"  onclick="addOneNode()">
-				<span class="bigger-110 no-text-shadow">添加公司</span>
+				<span class="bigger-110 no-text-shadow">添加单位</span>
 			</a>
 			</div>
 			 <div class="clear"></div> 

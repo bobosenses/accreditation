@@ -9,12 +9,12 @@
 <div id="main"></div>
     <script type="text/javascript">
 
-    var echartsWarp= document.getElementById('main');     
-    var resizeWorldMapContainer = function () {//用于使chart自适应高度和宽度,通过窗体高宽计算容器高宽  
-        echartsWarp.style.width = window.innerWidth-20+'px';  
-        echartsWarp.style.height = window.innerHeight-20+'px';  
-    };        
-    resizeWorldMapContainer ();//设置容器高宽  
+    var echartsWarp= document.getElementById('main');
+    var resizeWorldMapContainer = function () {//用于使chart自适应高度和宽度,通过窗体高宽计算容器高宽
+        echartsWarp.style.width = window.innerWidth-20+'px';
+        echartsWarp.style.height = window.innerHeight-20+'px';
+    };
+    resizeWorldMapContainer ();//设置容器高宽
     var myChart = echarts.init(echartsWarp);
 
     option = {
@@ -84,7 +84,7 @@
     	        }
     	    ]
     	};
-   
+
     myChart.setOption(option);
     </script>
 </body>

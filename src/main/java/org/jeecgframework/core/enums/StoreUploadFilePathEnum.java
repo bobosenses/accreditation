@@ -8,6 +8,7 @@ import org.jeecgframework.core.util.oConvertUtils;
  *
  */
 public enum StoreUploadFilePathEnum {
+	STAFF("staff", "upload/img/staff"),
 	PHOTOSUCAI("photosucai", "upload/img/photosucai"), 
 	DEFAULT("default", "upload/files");	 
 	 

@@ -1107,7 +1107,8 @@ public class OrganzationController extends BaseController {
 				StringBuffer hql = new StringBuffer(" from TSDepart t where 1=1 ");
 				//当其他用户登陆的时候查询用户关联的管理员组的组织机构
 				if(!"admin".equals(userName)) {
-					hql.append(" and id in (select deptId from TSDepartAuthGroupEntity where id in (select groupId from TSDepartAuthgManagerEntity where userId = '"+userName+"'))");
+					hql.append(" and t.createBy = '"+userName+"'");
+					hql.append("order by t.departOrder");
 				}
 				List<TSDepart> departList = this.systemService.findHql(hql.toString());
 

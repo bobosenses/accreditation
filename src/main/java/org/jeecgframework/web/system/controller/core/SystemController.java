@@ -1,5 +1,6 @@
 package org.jeecgframework.web.system.controller.core;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,6 +24,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.zxing.WriterException;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
@@ -40,16 +42,7 @@ import org.jeecgframework.core.enums.StoreUploadFilePathEnum;
 import org.jeecgframework.core.extend.hqlsearch.parse.ObjectParseUtil;
 import org.jeecgframework.core.extend.hqlsearch.parse.PageValueConvertRuleEnum;
 import org.jeecgframework.core.extend.hqlsearch.parse.vo.HqlRuleEnum;
-import org.jeecgframework.core.util.JSONHelper;
-import org.jeecgframework.core.util.ListUtils;
-import org.jeecgframework.core.util.MutiLangSqlCriteriaUtil;
-import org.jeecgframework.core.util.MutiLangUtil;
-import org.jeecgframework.core.util.PropertiesUtil;
-import org.jeecgframework.core.util.ResourceUtil;
-import org.jeecgframework.core.util.SetListSort;
-import org.jeecgframework.core.util.StringUtil;
-import org.jeecgframework.core.util.YouBianCodeUtil;
-import org.jeecgframework.core.util.oConvertUtils;
+import org.jeecgframework.core.util.*;
 import org.jeecgframework.tag.core.easyui.TagUtil;
 import org.jeecgframework.tag.vo.datatable.SortDirection;
 import org.jeecgframework.tag.vo.easyui.ComboTreeModel;
@@ -1526,12 +1519,12 @@ public class SystemController extends BaseController {
 	 */
 	@RequestMapping("/filedeal")
     @ResponseBody
-    public AjaxJson filedeal(HttpServletRequest request, HttpServletResponse response) {
+    public AjaxJson filedeal(HttpServletRequest request, HttpServletResponse response) throws WriterException {
         AjaxJson j = new AjaxJson();
         String msg="啥都没干-没传参数吧！";
         String upFlag=request.getParameter("isup");
         String delFlag=request.getParameter("isdel");
-        //String ctxPath = request.getSession().getServletContext().getRealPath("");
+        String typeid = request.getParameter("groupId");
         String ctxPath=ResourceUtil.getConfigByName("webUploadpath");//demo中设置为D://upFiles,实际项目应因事制宜
         try {
 	        //如果是上传操作
@@ -1540,13 +1533,23 @@ public class SystemController extends BaseController {
 	        	String bizType=request.getParameter("bizType");//上传业务名称
 	        	String bizPath=StoreUploadFilePathEnum.getPath(bizType);//根据业务名称判断上传路径
 	        	String nowday=new SimpleDateFormat("yyyyMMdd").format(new Date());
-	    		File file = new File(ctxPath+File.separator+bizPath+File.separator+nowday);
-	    		if (!file.exists()) {
-	    			file.mkdirs();// 创建文件根目录
-	    		}
-	            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-	            MultipartFile mf=multipartRequest.getFile("file");// 获取上传文件对象
-	    		fileName = mf.getOriginalFilename();// 获取文件名
+				String finalPath = "";
+				MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+				MultipartFile mf=multipartRequest.getFile("file");// 获取上传文件对象
+				fileName = mf.getOriginalFilename();// 获取文件名
+				String uploadbasepath = "upload";// 文件上传根目录
+				// 文件数据库保存路径
+				String path = uploadbasepath + "/";// 文件保存在硬盘的相对路径
+				if (typeid != null) {
+					finalPath = multipartRequest.getSession().getServletContext().getRealPath("/") + "/" + path+File.separator+typeid;
+				} else {
+					finalPath = ctxPath+File.separator+bizPath+File.separator+nowday;
+				}
+				String realPath = multipartRequest.getSession().getServletContext().getRealPath("/") + "/" + path;// 文件的硬盘真实路径
+				File file = new File(realPath);
+				if (!file.exists()) {
+					file.mkdirs();// 创建根目录
+				}
 	    		String savePath = file.getPath() + File.separator + fileName;
 	    		File savefile = new File(savePath);
 	    		FileCopyUtils.copy(mf.getBytes(), savefile);

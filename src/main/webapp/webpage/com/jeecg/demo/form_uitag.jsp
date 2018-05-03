@@ -133,7 +133,7 @@
 		<tr>
 			<td>多文件上传：</td>
 			<!-- 文件路径对应的参数name为‘fileName1’、业务类型是‘photosucai’、自动上传、上传文件扩展名限制doc,txt,jpg、按钮风格：绿色大号按钮 -->
-			<td><t:webUploader name="fileName1" bizType="photosucai" auto="true" extensions="doc,txt,jpg" buttonStyle="btn-green btn-L" ></t:webUploader></td>
+			<td><t:webUploader name="fileName1" bizType="photosucai" auto="true" extensions="jpg,png" buttonStyle="btn-blue btn-S" ></t:webUploader></td>
 		</tr>
 		<tr>
 			<td>单文件上传：</td>

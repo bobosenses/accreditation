@@ -127,6 +127,19 @@ public class UserServiceImpl extends CommonServiceImpl implements UserService {
 		saveUserOrgList(user,orgIds);
 		saveRoleUser(user,roleIds);
 	}
+
+	public void saveNoOrg(TSUser user, String[] orgIds, String[] roleIds) {
+		if(StringUtil.isNotEmpty(user.getId())){
+			commonDao.executeSql("delete from t_s_user_org where user_id=?", user.getId());
+			this.commonDao.updateEntitie(user);
+			List<TSRoleUser> ru = commonDao.findByProperty(TSRoleUser.class, "TSUser.id", user.getId());
+			commonDao.deleteAllEntitie(ru);
+		}else{
+			this.commonDao.save(user);
+		}
+		saveUserOrgList(user,orgIds);
+		saveRoleUser(user,roleIds);
+	}
 	
 	/**
      * 保存 用户-组织机构 关系信息

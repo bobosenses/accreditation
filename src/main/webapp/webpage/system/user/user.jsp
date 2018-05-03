@@ -117,38 +117,38 @@
                 </td>
 			</tr>
 		</c:if>
-		<tr>
-			<td align="right"><label class="Validform_label"> <t:mutiLang langKey="common.department"/>: </label></td>
-			<td class="value">
-				 <%--update-start--Author:jg_renjie  Date:20160320 for：#942 【组件封装】组织机构弹出模式，目前是列表，得改造成树方式--%>
-                <%--update-start--Author:zhangguoming  Date:20140826 for：将combobox修改为combotree--%>
-                <%--<select class="easyui-combobox" data-options="multiple:true, editable: false" id="orgSelect" datatype="*">--%>
-                <%--<select class="easyui-combotree" data-options="url:'departController.do?getOrgTree', multiple:true, cascadeCheck:false"
-                        id="orgSelect" name="orgSelect" datatype="select1">
-                update-end--Author:zhangguoming  Date:20140826 for：将combobox修改为combotree
-                    <c:forEach items="${departList}" var="depart">
-                        <option value="${depart.id }">${depart.departname}</option>
-                    </c:forEach>
-                </select> --%>
-                <%--  <t:departSelect departId="${tsDepart.id }" departName="${tsDepart.departname }"></t:departSelect>--%>
-                
-                <input id="departname" name="departname" type="text" readonly="readonly" class="inputxt" datatype="*" value="${departname}"/>
-                <input id="orgIds" name="orgIds" type="hidden" value="${orgIds}"/>
-                <a href="#" class="easyui-linkbutton" plain="true" icon="icon-search" id="departSearch" onclick="openDepartmentSelect()">选择</a>
-                <a href="#" class="easyui-linkbutton" plain="true" icon="icon-redo" id="departRedo" onclick="callbackClean()">清空</a>
-                 <%--update-end--Author:jg_renjie  Date:20160320 for：#942 【组件封装】组织机构弹出模式，目前是列表，得改造成树方式--%>
-                <span class="Validform_checktip"><t:mutiLang langKey="please.muti.department"/></span>
-            </td>
-		</tr>
-		<tr>
-			<td align="right"><label class="Validform_label"> <t:mutiLang langKey="common.role"/>: </label></td>
-			<td class="value" nowrap>
-                <input id="roleid" name="roleid" type="hidden" value="${id}"/>
-                <input name="roleName" id="roleName" class="inputxt" value="${roleName }" readonly="readonly" datatype="*" />
-                <t:choose hiddenName="roleid" hiddenid="id" textname="roleName" url="userController.do?roles" name="roleList" icon="icon-search" title="common.role.list" isclear="true" isInit="true"></t:choose>
-                <span class="Validform_checktip"><t:mutiLang langKey="role.muti.select"/></span>
-            </td>
-		</tr>
+		<%--<tr>--%>
+			<%--<td align="right"><label class="Validform_label"> <t:mutiLang langKey="common.department"/>: </label></td>--%>
+			<%--<td class="value">--%>
+				 <%--&lt;%&ndash;update-start--Author:jg_renjie  Date:20160320 for：#942 【组件封装】组织机构弹出模式，目前是列表，得改造成树方式&ndash;%&gt;--%>
+                <%--&lt;%&ndash;update-start--Author:zhangguoming  Date:20140826 for：将combobox修改为combotree&ndash;%&gt;--%>
+                <%--&lt;%&ndash;<select class="easyui-combobox" data-options="multiple:true, editable: false" id="orgSelect" datatype="*">&ndash;%&gt;--%>
+                <%--&lt;%&ndash;<select class="easyui-combotree" data-options="url:'departController.do?getOrgTree', multiple:true, cascadeCheck:false"--%>
+                        <%--id="orgSelect" name="orgSelect" datatype="select1">--%>
+                <%--update-end--Author:zhangguoming  Date:20140826 for：将combobox修改为combotree--%>
+                    <%--<c:forEach items="${departList}" var="depart">--%>
+                        <%--<option value="${depart.id }">${depart.departname}</option>--%>
+                    <%--</c:forEach>--%>
+                <%--</select> &ndash;%&gt;--%>
+                <%--&lt;%&ndash;  <t:departSelect departId="${tsDepart.id }" departName="${tsDepart.departname }"></t:departSelect>&ndash;%&gt;--%>
+
+                <%--<input id="departname" name="departname" type="text" readonly="readonly" class="inputxt" datatype="*" value="${departname}"/>--%>
+                <%--<input id="orgIds" name="orgIds" type="hidden" value="${orgIds}"/>--%>
+                <%--<a href="#" class="easyui-linkbutton" plain="true" icon="icon-search" id="departSearch" onclick="openDepartmentSelect()">选择</a>--%>
+                <%--<a href="#" class="easyui-linkbutton" plain="true" icon="icon-redo" id="departRedo" onclick="callbackClean()">清空</a>--%>
+                 <%--&lt;%&ndash;update-end--Author:jg_renjie  Date:20160320 for：#942 【组件封装】组织机构弹出模式，目前是列表，得改造成树方式&ndash;%&gt;--%>
+                <%--<span class="Validform_checktip"><t:mutiLang langKey="please.muti.department"/></span>--%>
+            <%--</td>--%>
+		<%--</tr>--%>
+		<%--<tr>--%>
+			<%--<td align="right"><label class="Validform_label"> <t:mutiLang langKey="common.role"/>: </label></td>--%>
+			<%--<td class="value" nowrap>--%>
+                <%--<input id="roleid" name="roleid" type="hidden" value="${id}"/>--%>
+                <%--<input name="roleName" id="roleName" class="inputxt" value="${roleName }" readonly="readonly" datatype="*" />--%>
+                <%--<t:choose hiddenName="roleid" hiddenid="id" textname="roleName" url="userController.do?roles" name="roleList" icon="icon-search" title="common.role.list" isclear="true" isInit="true"></t:choose>--%>
+                <%--<span class="Validform_checktip"><t:mutiLang langKey="role.muti.select"/></span>--%>
+            <%--</td>--%>
+		<%--</tr>--%>
 		<tr>
 			<td align="right" nowrap><label class="Validform_label">  <t:mutiLang langKey="common.phone"/>: </label></td>
 			<td class="value">
@@ -166,8 +166,8 @@
 		<tr>
 			<td align="right"><label class="Validform_label"> <t:mutiLang langKey="common.common.mail"/>: </label></td>
 			<td class="value">
-				<!-- update--begin--author:zhangjiaqiang date:20171019 for:修订用户邮箱为必填 -->
-                <input class="inputxt" name="email" value="${user.email}"  validType="t_s_user,email,id" datatype="e" errormsg="邮箱格式不正确!" />
+				<!-- update--begin--author:zhangjiaqiang date:20171019 for:修订用户邮箱为必填 validType="t_s_user,email,id"-->
+                <input class="inputxt" name="email" value="${user.email}"   datatype="e" errormsg="邮箱格式不正确!" ignore="ignore" />
                 <!-- update--end--author:zhangjiaqiang date:20171019 for:修订用户邮箱为必填 -->
                 <span class="Validform_checktip"></span>
             </td>

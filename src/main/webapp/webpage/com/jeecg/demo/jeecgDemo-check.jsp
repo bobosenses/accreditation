@@ -20,7 +20,7 @@
 							</label>
 						</td>
 						<td class="value">
-									<t:dictSelect field="status" type="radio" typeGroupCode="sf_yn" defaultVal="Y" hasLabel="false"  title="入职状态" ></t:dictSelect>     
+									<t:dictSelect field="status" type="radio" typeGroupCode="sf_yn" defaultVal="Y" hasLabel="false"  title="入职状态" ></t:dictSelect>
 							<span class="Validform_checktip"></span>
 							<label class="Validform_label" style="display: none;">入职状态</label>
 						</td>

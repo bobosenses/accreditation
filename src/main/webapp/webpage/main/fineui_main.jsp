@@ -10,7 +10,8 @@
 	<meta http-equiv="Cache-Control" content="no-siteapp" />
 	<meta name="keywords" content="JEECG 企业级快速开发平台">
     <meta name="description" content="JEECG 企业级快速开发平台，她采用强大代码生成，在线开发能力">
-    <title><t:mutiLang langKey="jeect.platform"/></title>
+    <%--<title><t:mutiLang langKey="jeect.platform"/></title>--%>
+	<title>山西安监局制证系统</title>
     <link href="plug-in-ui/hplus/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
 	<link rel="stylesheet" href="plug-in/themes/fineui/common/css/sccl.css">
 	<link rel="stylesheet" type="text/css" href="plug-in/themes/fineui/common/skin/qingxin/skin.css" id="layout-skin"/>
@@ -132,7 +133,7 @@
 	<div class="layout-admin">
 		<!-- top -->
 		<header class="layout-header">
-			<span class="header-logo"><img alt="image" width="190" height="68" src="plug-in/login/images/jeecg-aceplus.png" /></span>
+			<%--<span class="header-logo"><img alt="image" width="190" height="68" src="plug-in/login/images/jeecg-aceplus.png" /></span>--%>
 			
 			<div class="titlerow" >
 				<div class="titlecell">

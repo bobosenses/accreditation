@@ -650,4 +650,16 @@ public class DateUtils extends PropertyEditorSupport {
 	    return calendar.get(Calendar.YEAR);
 	  }
 
+	public static void main(String[] args) {
+		String aaa = "证号-姓名-性别-文化程度-工作单位-单位类别-通讯地址-联系电话-作业类别-准操项目-培训单位-发证机关-理论成绩-实操成绩-初领日期-发证日期-本工种工龄-一次复审期-二次复审期-复审记录1-复审记录2-有效期从-有效期到-证件标识-复审标识-一审培训-二审培训-备用3-备用4-是否连续-用工类型-身体状况-准考证号-办理号-记录号-违章记录";
+		String[] all = aaa.split("-");
+		for (int i = 0; i < all.length; i++) {
+			System.out.println("//设置" + all[i]);
+			System.out.println("if (row.getCell("+i+") != null) {");
+			System.out.println("row.getCell("+i+").setCellType(HSSFCell.CELL_TYPE_STRING);");
+			System.out.println("staff.setCardNo(row.getCell("+i+").getStringCellValue());");
+			System.out.println("}");
+		}
+	}
+
 }

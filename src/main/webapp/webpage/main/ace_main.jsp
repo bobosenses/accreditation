@@ -4,12 +4,13 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title><t:mutiLang langKey="jeect.platform"/></title>
+		<%--<title><t:mutiLang langKey="jeect.platform"/></title>--%>
+        <title>山西安监局制证系统</title>
 		<meta name="keywords" content="<t:mutiLang langKey="jeect.platform"/>" />
 		<meta name="description" content="<t:mutiLang langKey="jeect.platform"/>" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="plug-in/jquery/jquery.contextmenu.css"/>
-		<link rel="shortcut icon" href="images/favicon.ico">
+		<%--<link rel="shortcut icon" href="images/favicon.ico">--%>
 		<!-- basic styles -->
 		<link href="plug-in/ace/assets/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="plug-in-ui/hplus/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
@@ -61,7 +62,7 @@
 					<a href="#" class="navbar-brand">
 						<small>
 							<i class="icon-leaf"></i>
-							JEECG 微云快速开发平台
+							山西省质量安全监督管理局
 						</small>
 					</a><!-- /.brand -->
 				</div><!-- /.navbar-header -->
@@ -481,7 +482,7 @@
 		<script src="plug-in/layer/layer.js"></script>
 	    <script src="plug-in/ace/js/bootbox.js"></script>
 		<!--add-start--Author:wangkun Date:20160813 for:内部聊天修改-->
-		<%@include file="/context/layui.jsp"%>
+		<%--<%@include file="/context/layui.jsp"%>--%>
 		<!--add-end--Author:wangkun Date:20160813 for:内部聊天修改-->
 		<!-- inline scripts related to this page -->
 		<script>

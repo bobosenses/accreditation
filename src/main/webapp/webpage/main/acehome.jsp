@@ -12,7 +12,6 @@
 
     <title>Jeecg 微云快速开发平台</title>
 
-    <link rel="shortcut icon" href="images/favicon.ico">
     <link href="plug-in-ui/hplus/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="plug-in-ui/hplus/css/font-awesome.css?v=4.4.0" rel="stylesheet">
 

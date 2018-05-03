@@ -229,7 +229,7 @@ public class DepartController extends BaseController {
 		req.setAttribute("departList", departList);
 //        这个if代码段没有用吧，注释之
 //		if (StringUtil.isNotEmpty(depart.getId())) {
-//			TSDepart tspDepart = new TSDepart();
+//			TSDepart tspDepart = new TSDepart();saveDepart
 //			TSDepart tsDepart = new TSDepart();
 //			depart = systemService.getEntity(TSDepart.class, depart.getId());
 //			tspDepart.setId(depart.getId());

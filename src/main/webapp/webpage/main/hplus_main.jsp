@@ -14,12 +14,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
 
-    <title><t:mutiLang langKey="jeect.platform"/></title>
-
+    <%--<title><t:mutiLang langKey="jeect.platform"/></title>--%>
+    <title>山西安监局制证系统</title>
     <meta name="keywords" content="JEECG 企业级快速开发平台">
     <meta name="description" content="JEECG 企业级快速开发平台，她采用强大代码生成，在线开发能力">
 
-    <link rel="shortcut icon" href="images/favicon.ico">
+    <%--<link rel="shortcut icon" href="images/favicon.ico">--%>
     <link href="plug-in-ui/hplus/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="plug-in-ui/hplus/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
     <link rel="stylesheet" href="plug-in/ace/assets/css/font-awesome.min.css" />
@@ -44,7 +44,7 @@
             <ul class="nav" id="side-menu">
                 <li class="nav-header">
                     <div class="dropdown profile-element">
-                                <span><img alt="image" width="180" height="61" src="plug-in/login/images/jeecg-aceplus.png" /></span>
+                                <%--<span><img alt="image" width="180" height="61" src="plug-in/login/images/jeecg-aceplus.png" /></span>--%>
                             <%--dangzhenghui end 20170502 for 增加添加头像功能--%>
                             <%--//update-start--Author: chenj Date:20160726 for: TASK #1207 [改造]h+风格下，去掉logo下面的内容，迁移位置到右上角，主题位置
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
@@ -86,7 +86,7 @@
                 <div class="navbar-header" style="height: 60px;"><a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
                     <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
                         <div class="form-group">
-                            <input type="text" placeholder="欢迎使用Jeecg快速开发平台 …" class="form-control" name="top-search" id="top-search">
+                            <input type="text" placeholder="欢迎使用信息打印平台 …" class="form-control" name="top-search" id="top-search">
                         </div>
                     </form>
                 </div>
@@ -155,9 +155,9 @@
                             <li><a href="javascript:openwindow('<t:mutiLang langKey="common.profile"/>','userController.do?userinfo')"><t:mutiLang langKey="common.profile"/></a></li>
                             <li><a href="javascript:openwindow('<t:mutiLang langKey="common.ssms.getSysInfos"/>','tSSmsController.do?getSysInfos')"><t:mutiLang langKey="common.ssms.getSysInfos"/></a></li>
                             <li><a href="javascript:add('<t:mutiLang langKey="common.change.style"/>','userController.do?changestyle','',550,250)"><t:mutiLang langKey="common.my.style"/></a></li>
-                            <li><a href="javascript:toSwagger()">Swagger接口</a></li>
+                            <%--<li><a href="javascript:toSwagger()">Swagger接口</a></li>--%>
                             <li><a href="javascript:clearLocalstorage()"><t:mutiLang langKey="common.clear.localstorage"/></a></li>
-                            <li><a href="javascript:toJeecgYun()">云应用中心</a></li>
+                            <%--<li><a href="javascript:toJeecgYun()">云应用中心</a></li>--%>
                             <!-- <li><a href="http://yun.jeecg.org" target="_blank">云应用中心</li> -->
                            <!--  <li class="divider"></li>
                             <li><a href="javascript:logout()">注销</a></li> -->
@@ -215,7 +215,7 @@
             <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="loginController.do?hplushome" frameborder="0" data-id="loginController.do?hplushome" seamless></iframe>
         </div>
         <div class="footer" style="border-top:none;">
-            <div class="pull-right">&copy; <t:mutiLang langKey="system.version.number"/> <a href="http://www.jeecg.org/" target="_blank">jeecg</a>
+            <div class="pull-right">&copy; 山西省安监局
             </div>
         </div>        
     </div>
@@ -469,7 +469,7 @@
 <!-- 弹出TAB -->
 <script type="text/javascript" src="plug-in/hplus/hplus-tab.js"></script>
 <!-- 在线聊天 -->
-<%@include file="/context/layui.jsp"%>
+<%--<%@include file="/context/layui.jsp"%>--%>
 <script>
     function logout(){
         /*bootbox.confirm("<t:mutiLang langKey="common.exit.confirm"/>", function(result) {

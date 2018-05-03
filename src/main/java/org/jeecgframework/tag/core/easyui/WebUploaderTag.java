@@ -20,8 +20,8 @@ public class WebUploaderTag extends TagSupport {
 	private boolean auto=false;//是否自动上传上传按钮风格
 	private String buttonStyle;//默认绿色小号按钮
 	private String url = "systemController/filedeal.do";//文件上传处理url
-//	private String url = "systemController/ftpUploader.do";//ftp文件上传处理url
-	private int fileNumLimit =3;//fileNumLimit 最大文件数
+	//	private String url = "systemController/ftpUploader.do";//ftp文件上传处理url
+	private int fileNumLimit =30;//fileNumLimit 最大文件数
 	private int fileSingleSizeLimit=5242880;//fileSingleSizeLimit单个文件最大5M[1024*1024*5]
 	private int size;//文件总大小
 	private String fileVal="file";//fileVal设置文件上传域的name,默认file
@@ -37,6 +37,7 @@ public class WebUploaderTag extends TagSupport {
 	private String nullMsg;//空的时候的提示信息,默认会根据当前控件的类型提示,文件类则提示“请选择文件”;图片类则提示“请选择图片”.
 	private String readOnly="false";//保留字段
 	private String bizType;//业务类型,根据该类型确定上传路径
+	private String groupId;//分组id
 	private boolean displayTxt=true;//是否显示上传列表[默认显示]true显示false隐藏
 	//private static String imgexts="gif,jpg,jpeg,bmp,png";
 	public int doStartTag() throws JspTagException {
@@ -95,7 +96,7 @@ public class WebUploaderTag extends TagSupport {
 			if(oConvertUtils.isEmpty(extendParams)){
 				sb.append(",formData:{isup:'1',bizType:'"+bizType+"'}});");
 			}else{
-				sb.append(",formData:{isup:'1',bizType:'"+bizType+"',"+extendParams+"}});");
+				sb.append(",formData:{isup:'1',bizType:'"+bizType+"',groupId:'"+groupId+"'"+extendParams+"}});");
 			}
 			if(!auto){
 				sb.append("\r\nvar upbtnrdo4=\"<div id='"+name+"ctlBtn' class='upbtn btn-blue "+btnCss+"'>开始上传</div>\";$('#"+name+"picker').find('div:eq(0)').after(upbtnrdo4);upbtnrdo4='';\r\n");
@@ -348,6 +349,14 @@ public class WebUploaderTag extends TagSupport {
 	}
 	public void setDisplayTxt(boolean displayTxt) {
 		this.displayTxt = displayTxt;
+	}
+
+	public String getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
 	}
 	//根据上传文件的后缀重置type
 	/*private void typeResetByext(String ext){

@@ -16,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Property;
 import org.jeecgframework.core.common.controller.BaseController;
+import org.jeecgframework.core.common.dao.jdbc.JdbcDao;
 import org.jeecgframework.core.common.hibernate.qbc.CriteriaQuery;
 import org.jeecgframework.core.common.model.common.UploadFile;
 import org.jeecgframework.core.common.model.json.AjaxJson;
@@ -24,17 +25,7 @@ import org.jeecgframework.core.common.model.json.DataGrid;
 import org.jeecgframework.core.common.model.json.ValidForm;
 import org.jeecgframework.core.constant.Globals;
 import org.jeecgframework.core.enums.SysThemesEnum;
-import org.jeecgframework.core.util.ExceptionUtil;
-import org.jeecgframework.core.util.IpUtil;
-import org.jeecgframework.core.util.ListtoMenu;
-import org.jeecgframework.core.util.MyBeanUtils;
-import org.jeecgframework.core.util.PasswordUtil;
-import org.jeecgframework.core.util.ResourceUtil;
-import org.jeecgframework.core.util.RoletoJson;
-import org.jeecgframework.core.util.SetListSort;
-import org.jeecgframework.core.util.StringUtil;
-import org.jeecgframework.core.util.SysThemesUtil;
-import org.jeecgframework.core.util.oConvertUtils;
+import org.jeecgframework.core.util.*;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.ImportParams;
@@ -650,8 +641,23 @@ public class UserController extends BaseController {
 		//update--begin-- author:Yandong -- date:20180115-- for:TASK #2494 【改造】Jeecg 代码事务不严谨，control的逻辑改到service里面---
 		Short logType=Globals.Log_Type_UPDATE;
 		// 得到用户的角色
-		String roleid = oConvertUtils.getString(req.getParameter("roleid"));
-		String orgid=oConvertUtils.getString(req.getParameter("orgIds"));
+		TSUser u = ResourceUtil.getSessionUser();
+		TSDepart depart = systemService.findUniqueByProperty(TSDepart.class,"id",u.getDepartid());
+		if (depart.getTSPDepart() != null) {
+			message = "用户: " + u.getUserName() + "没有新增用户权限";
+		}
+		TSDepart departNew = new TSDepart();
+		departNew.setDepartname(user.getRealName());
+		departNew.setDescription(user.getRealName());
+		departNew.setOrgType("1");
+		departNew.setMobile(user.getMobilePhone());
+		departNew.setDepartname(user.getRealName());
+		departNew.setCreateName(user.getUserName());
+		String localMaxCode  = getMaxLocalCode(null);
+		departNew.setOrgCode(YouBianCodeUtil.getNextYouBianCode(localMaxCode));
+		userService.save(departNew);
+		String roleid = "4028e381629f5aec01629f82db3c0018" ;
+		String orgid = departNew.getId();
 		if (StringUtil.isNotEmpty(user.getId())) {
 			TSUser users = systemService.getEntity(TSUser.class, user.getId());
 			users.setEmail(user.getEmail());
@@ -683,6 +689,38 @@ public class UserController extends BaseController {
 		logger.info("["+IpUtil.getIpAddr(req)+"][添加编辑用户]"+message);
 		return j;
 		//update--end-- author:Yandong -- date:20180115-- for:TASK #2494 【改造】Jeecg 代码事务不严谨，control的逻辑改到service里面---
+	}
+
+	private synchronized String getMaxLocalCode(String parentCode){
+		if(oConvertUtils.isEmpty(parentCode)){
+			parentCode = "";
+		}
+		int localCodeLength = parentCode.length() + YouBianCodeUtil.zhanweiLength;
+		StringBuilder sb = new StringBuilder();
+		sb.append("SELECT org_code FROM t_s_depart");
+
+		if(ResourceUtil.getJdbcUrl().indexOf(JdbcDao.DATABSE_TYPE_SQLSERVER)!=-1){
+			sb.append(" where LEN(org_code) = ").append(localCodeLength);
+		}else{
+			sb.append(" where LENGTH(org_code) = ").append(localCodeLength);
+		}
+
+		if(oConvertUtils.isNotEmpty(parentCode)){
+			sb.append(" and  org_code like '").append(parentCode).append("%'");
+		} else {
+
+			sb.append(" and LEFT(org_code,1)='A'");
+
+		}
+
+		sb.append(" ORDER BY org_code DESC");
+		List<Map<String, Object>> objMapList = systemService.findForJdbc(sb.toString(), 1, 1);
+		String returnCode = null;
+		if(objMapList!=null && objMapList.size()>0){
+			returnCode = (String)objMapList.get(0).get("org_code");
+		}
+
+		return returnCode;
 	}
 
 //    update-start--Author:zhangguoming  Date:20140825 for：添加新的业务逻辑方法

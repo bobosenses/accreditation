@@ -151,8 +151,7 @@ public class CommonDao extends GenericBaseCommonDao implements ICommonDao, IGene
 				if (!file.exists()) {
 					file.mkdirs();// 创建文件自定义子目录
 				}
-			}
-			else {
+			} else {
 				realPath += DateUtils.getDataString(DateUtils.yyyyMMdd) + "/";
 				path += DateUtils.getDataString(DateUtils.yyyyMMdd) + "/";
 				file = new File(realPath);

@@ -11,7 +11,7 @@
         function make2DCode() {
             $("#qrcode").html("");//清空二维码
             var qrcode;
-            var codesize = document.getElementById("codesize").value;
+            var codesize = 400;
             console.log(codesize);
             qrcode = new QRCode(document.getElementById("qrcode"), {
                 width : codesize,

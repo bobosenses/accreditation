@@ -1787,6 +1787,12 @@
 			<description>若指定该属性则①文件路径 input的name②action返回的文件路径的name都需使用该值</description>
 		</attribute>
 		<attribute>
+			<name>typeid</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>指定上传时候的特殊值字段</description>
+		</attribute>
+		<attribute>
 			<name>pathValues</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -1887,6 +1893,12 @@
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 			<description>业务类型[StoreUploadFilePathEnum],根据该类型确定上传路径</description>
+		</attribute>
+		<attribute>
+			<name>groupId</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>分组id</description>
 		</attribute>
 		<attribute>
 			<name>displayTxt</name>
