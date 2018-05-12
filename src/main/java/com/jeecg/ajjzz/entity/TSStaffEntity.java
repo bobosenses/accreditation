@@ -24,7 +24,7 @@ import org.jeecgframework.poi.excel.annotation.Excel;
 @SuppressWarnings("serial")
 public class TSStaffEntity implements java.io.Serializable {
 	/**id*/
-	private Integer id;
+	private Long id;
 	/**照片*/
 	@Excel(name="照片",width=15)
 	private String photo;
@@ -141,7 +141,7 @@ public class TSStaffEntity implements java.io.Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 
 	@Column(name ="ID",nullable=false,length=19)
-	public Integer getId(){
+	public Long getId(){
 		return this.id;
 	}
 
@@ -149,7 +149,7 @@ public class TSStaffEntity implements java.io.Serializable {
 	 *方法: 设置java.lang.Integer
 	 *@param: java.lang.Integer  id
 	 */
-	public void setId(Integer id){
+	public void setId(Long id){
 		this.id = id;
 	}
 	/**

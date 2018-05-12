@@ -39,6 +39,7 @@ import org.jeecgframework.web.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -117,6 +118,12 @@ public class TSStaffController extends BaseController {
 	 */
 	@RequestMapping(params = "print")
 	public ModelAndView print(HttpServletRequest request) {
+		String id = request.getParameter("id");
+		TSStaffEntity staff = tSStaffService.findUniqueByProperty(TSStaffEntity.class, "id", new Long(id));
+		if (staff != null) {
+			request.setAttribute("realName", staff.getRealName());
+			request.setAttribute("cardNo", staff.getCardNo());
+		}
 		System.out.println("-----------------------");
 		return new ModelAndView("com/jeecg/ajjzz/print");
 	}
@@ -133,15 +140,17 @@ public class TSStaffController extends BaseController {
 		response.addHeader("Cache-Control", "post-check=0, pre-check=0");
 		response.setHeader("Pragma", "no-cache");
 		response.setContentType("image/png");
-		ServletOutputStream out = null;
-		out = response.getOutputStream();
-
-		BufferedImage image = ImagesUtils.imagesSynthesis(id, "李文搏", "男", "国际大都会", "2018-3-6", "132135");
-		ImageIO.write(image, "png", out);
-		out.flush();
-		out.close();
-
-
+		TSStaffEntity staff = tSStaffService.findUniqueByProperty(TSStaffEntity.class, "id", new Long(id));
+		if (staff != null) {
+			request.setAttribute("realName", staff.getRealName());
+			request.setAttribute("cardNo", staff.getCardNo());
+		}
+		String path = "upload";
+		String name = StringUtil.random(4);
+		String realPath = request.getSession().getServletContext().getRealPath("/") + "/" + path + File.separator + name + ".jpg";
+		File file = new File(realPath);
+		BufferedImage image = ImagesUtils.imagesSynthesis(id, "李文搏", "男", "国际大都会", "2018-3-6", "132135", staff);
+		ImageIO.write(image, "jpg", file);
 	}
 
 

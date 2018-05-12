@@ -82,9 +82,9 @@
  }
 
  function downloadqrcode(id) {
-     window.open("tSStaffController.do?getQrCodeImage&id="+id);
-     <%--console.log(${id});--%>
-     <%--openuploadwin('打印证件', 'tSStaffController.do?print', "tSStaffList");--%>
+     // window.open("tSStaffController.do?getQrCodeImage&id="+id);
+     console.log(id);
+     createwindow('打印证件', 'tSStaffController.do?print&id=' + id, 850, 550);
  }
 //导入
 function ImportXls() {
