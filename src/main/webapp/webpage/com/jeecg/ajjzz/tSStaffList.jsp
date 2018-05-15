@@ -20,6 +20,7 @@
    <t:dgCol title="卡MAC码"  field="cardMac"  queryMode="group"  width="300" showLen = "300"></t:dgCol>
    <t:dgCol title="证号"  field="cardNo"  queryMode="group"  width="200"></t:dgCol>
    <t:dgCol title="姓名"  field="realName"  queryMode="group"  width="200"></t:dgCol>
+   <t:dgCol title="证件标记"  field="printStatus" dictionary="card_state" queryMode="single" query="true"  width="400"></t:dgCol>
    <t:dgCol title="性别"  field="sex"  queryMode="group"  width="200"></t:dgCol>
    <t:dgCol title="证件状态"  field="checkType" dictionary="check_type" queryMode="single" query="true"  width="400"></t:dgCol>
    <t:dgCol title="联系电话"  field="phone"  queryMode="group"  width="300"></t:dgCol>
@@ -35,16 +36,16 @@
    <t:dgCol title="有效期到"  field="alidityPeriodEnd"  queryMode="group"  width="300"></t:dgCol>
    <t:dgCol title="本工种工龄"  field="workYears"  queryMode="group"  width="300"></t:dgCol>
    <t:dgCol title="期数标记"  field="periodSign"  queryMode="group"  width="300"></t:dgCol>
-   <t:dgCol title="证件标记"  field="printStatus" dictionary="card_state" queryMode="single" query="true"  width="400"></t:dgCol>
 
    <t:dgCol title="操作" field="opt" width="300"></t:dgCol>
-   <t:dgFunOpt funname="downloadqrcode(id)" title="打印证件" urlclass="ace_button"  urlfont="fa-search"></t:dgFunOpt>
+   <t:dgFunOpt funname="downloadqrcode(id)" title="证件预览" urlclass="ace_button"  urlfont="fa-search"></t:dgFunOpt>
    <t:dgToolBar title="查看" icon="icon-search" url="tSStaffController.do?goUpdate" funname="detail"></t:dgToolBar>
    <c:if test="${show == 'show'}">
     <t:dgToolBar title="编辑" icon="icon-edit" url="tSStaffController.do?goUpdate" funname="update"></t:dgToolBar>
     <t:dgToolBar title="导入班级" icon="icon-put" funname="ImportXls"></t:dgToolBar>
     <t:dgToolBar title="上传头像" icon="icon-put" funname="upload(id)"></t:dgToolBar>
     <t:dgToolBar title="批量删除"  icon="icon-remove" url="tSStaffController.do?doBatchDel" funname="deleteALLSelect"></t:dgToolBar>
+    <t:dgToolBar title="打印"  icon="icon-print" url="tSStaffController.do?printAll" funname="printALLSelect"></t:dgToolBar>
    </c:if>
   </t:datagrid>
   </div>
@@ -84,7 +85,7 @@
  function downloadqrcode(id) {
      // window.open("tSStaffController.do?getQrCodeImage&id="+id);
      console.log(id);
-     createwindow('打印证件', 'tSStaffController.do?print&id=' + id, 850, 550);
+     createwindow('证件预览', 'tSStaffController.do?print&id=' + id, 850, 550);
  }
 //导入
 function ImportXls() {

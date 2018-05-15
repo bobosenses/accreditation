@@ -7,6 +7,8 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import com.jeecg.ajjzz.entity.TSStaffEntity;
+import com.jeecg.ajjzz.service.TSStaffServiceI;
 import org.jeecgframework.core.beanvalidator.BeanValidators;
 import org.jeecgframework.web.system.pojo.base.TSBaseUser;
 import org.jeecgframework.web.system.pojo.base.TSUser;
@@ -53,6 +55,19 @@ public class UserRestController {
 	@Autowired
 	private Validator validator;
 
+
+	@Autowired
+	private TSStaffServiceI tSStaffService;
+
+	@RequestMapping(value = "/valid", method = RequestMethod.GET)
+	@ResponseBody
+	public String valid (String code) {
+		TSStaffEntity staff = tSStaffService.findUniqueByProperty(TSStaffEntity.class, "id", new Long(code));
+		if (staff != null) {
+			return "验证通过!";
+		}
+		return "验证失败，未查询到该人员！";
+	}
 	/**
 	 * 访问地址：http://localhost:8080/jeecg/rest/user
 	 * @return

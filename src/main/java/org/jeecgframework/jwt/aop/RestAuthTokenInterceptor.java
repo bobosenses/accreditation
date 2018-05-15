@@ -39,39 +39,40 @@ public class RestAuthTokenInterceptor implements  HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object obj) throws Exception {
 		String requestPath = request.getRequestURI().substring(request.getContextPath().length());
-		if(requestPath.indexOf("/rest/")==-1 || excludeUrls.contains(requestPath) ||moHuContain(excludeContainUrls, requestPath)){
-			return true;
-		}
-		
-		//从header中得到token
-		String authHeader = request.getHeader(JwtConstants.AUTHORIZATION);
-		if (authHeader == null) {
-            throw new ServletException("Missing or invalid X-AUTH-TOKEN header.");
-        }
-		// 验证token
-		Claims claims = null;
-		try {
-		    claims = Jwts.parser().setSigningKey(JwtConstants.JWT_SECRET).parseClaimsJws(authHeader).getBody();
-		}catch (final SignatureException e) {
-			throw new ServletException("Invalid token.");
-		}
-		
-		Object username = claims.getId();
-		if (oConvertUtils.isEmpty(username)) {
-            throw new ServletException("Invalid X-AUTH-TOKEN Subject no exist username.");
-        }
-		TokenModel model = manager.getToken(authHeader,username.toString());
-		if (manager.checkToken(model)) {
-			//如果token验证成功，将对象传递给下一个请求
-            request.setAttribute(JwtConstants.CURRENT_TOKEN_CLAIMS, claims);
-			//如果token验证成功，将token对应的用户id存在request中，便于之后注入
-			request.setAttribute(JwtConstants.CURRENT_USER_NAME, model.getUsername());
-			return true;
-		} else {
-			// 如果验证token失败，则返回401错误
-			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			return false;
-		}
+//		if(requestPath.indexOf("/rest/")==-1 || excludeUrls.contains(requestPath) ||moHuContain(excludeContainUrls, requestPath)){
+//			return true;
+//		}
+//
+//		//从header中得到token
+//		String authHeader = request.getHeader(JwtConstants.AUTHORIZATION);
+//		if (authHeader == null) {
+//            throw new ServletException("Missing or invalid X-AUTH-TOKEN header.");
+//        }
+//		// 验证token
+//		Claims claims = null;
+//		try {
+//		    claims = Jwts.parser().setSigningKey(JwtConstants.JWT_SECRET).parseClaimsJws(authHeader).getBody();
+//		}catch (final SignatureException e) {
+//			throw new ServletException("Invalid token.");
+//		}
+//
+//		Object username = claims.getId();
+//		if (oConvertUtils.isEmpty(username)) {
+//            throw new ServletException("Invalid X-AUTH-TOKEN Subject no exist username.");
+//        }
+//		TokenModel model = manager.getToken(authHeader,username.toString());
+//		if (manager.checkToken(model)) {
+//			//如果token验证成功，将对象传递给下一个请求
+//            request.setAttribute(JwtConstants.CURRENT_TOKEN_CLAIMS, claims);
+//			//如果token验证成功，将token对应的用户id存在request中，便于之后注入
+//			request.setAttribute(JwtConstants.CURRENT_USER_NAME, model.getUsername());
+//			return true;
+//		} else {
+//			// 如果验证token失败，则返回401错误
+//			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//			return false;
+//		}
+		return true;
 	}
 
 	@Override
