@@ -39,6 +39,7 @@ import org.jeecgframework.web.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -117,33 +118,40 @@ public class TSStaffController extends BaseController {
 	 */
 	@RequestMapping(params = "print")
 	public ModelAndView print(HttpServletRequest request) {
+		String id = request.getParameter("id");
+		TSStaffEntity staff = tSStaffService.findUniqueByProperty(TSStaffEntity.class, "id", new Long(id));
+		if (staff != null) {
+			request.setAttribute("realName", staff.getRealName());
+			request.setAttribute("cardNo", staff.getCardNo());
+		}
 		System.out.println("-----------------------");
 		return new ModelAndView("com/jeecg/ajjzz/print");
 	}
 
-	/**print
-	 * 获取二维码
-	 *
-	 * @return
-	 */
-	@RequestMapping(params = "getQrCodeImage")
-	public void getQrCodeImage(String id,HttpServletRequest request, HttpServletResponse response) throws WriterException, IOException {
-		response.setDateHeader("Expires", 0L);
-		response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
-		response.addHeader("Cache-Control", "post-check=0, pre-check=0");
-		response.setHeader("Pragma", "no-cache");
-		response.setContentType("image/png");
-		ServletOutputStream out = null;
-		out = response.getOutputStream();
-
-		BufferedImage image = ImagesUtils.imagesSynthesis(id, "李文搏", "男", "国际大都会", "2018-3-6", "132135");
-		ImageIO.write(image, "png", out);
-		out.flush();
-		out.close();
-
-
-	}
-
+//	/**print
+//	 * 获取二维码
+//	 *
+//	 * @return
+//	 */
+//	@RequestMapping(params = "getQrCodeImage")
+//	public void getQrCodeImage(String id,HttpServletRequest request, HttpServletResponse response) throws WriterException, IOException {
+//		response.setDateHeader("Expires", 0L);
+//		response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+//		response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+//		response.setHeader("Pragma", "no-cache");
+//		response.setContentType("image/png");
+//		TSStaffEntity staff = tSStaffService.findUniqueByProperty(TSStaffEntity.class, "id", new Long(id));
+//		if (staff != null) {
+//			request.setAttribute("realName", staff.getRealName());
+//			request.setAttribute("cardNo", staff.getCardNo());
+//		}
+//		String path = "upload";
+//		String name = staff.getRealName() + "_" + staff.getCardNo() + "_print";
+//		String realPath = request.getSession().getServletContext().getRealPath("/") + "/" + path + File.separator + name + ".jpg";
+//		File file = new File(realPath);
+//		BufferedImage image = ImagesUtils.imagesSynthesis(id, staff, request);
+//		ImageIO.write(image, "jpg", file);
+//	}
 
 	/**
 	 * 发证人员名单列表 页面跳转
@@ -328,11 +336,11 @@ public class TSStaffController extends BaseController {
 	public AjaxJson doBatchDel(String ids,HttpServletRequest request){
 		String message = null;
 		AjaxJson j = new AjaxJson();
-		message = "发证人员名单删除成功";
+		message = "删除成功";
 		try{
 			for(String id:ids.split(",")){
 				TSStaffEntity tSStaff = systemService.getEntity(TSStaffEntity.class, 
-				Integer.parseInt(id)
+				new Long(id)
 				);
 				tSStaffService.delete(tSStaff);
 				systemService.addLog(message, Globals.Log_Type_DEL, Globals.Log_Leavel_INFO);
@@ -340,6 +348,37 @@ public class TSStaffController extends BaseController {
 		}catch(Exception e){
 			e.printStackTrace();
 			message = "发证人员名单删除失败";
+			throw new BusinessException(e.getMessage());
+		}
+		j.setMsg(message);
+		return j;
+	}
+
+	/**
+	 * 批量删除发证人员名单
+	 *
+	 * @return
+	 */
+	@RequestMapping(params = "printAll")
+	@ResponseBody
+	public AjaxJson printAll(String ids,HttpServletRequest request){
+		String message = null;
+		AjaxJson j = new AjaxJson();
+		message = "打印成功";
+		try{
+			for(String id:ids.split(",")){
+				TSStaffEntity tSStaff = systemService.getEntity(TSStaffEntity.class,
+						new Long(id)
+				);
+//                request.getSession().getServletContext().getRealPath("/") + "/" + path + File.separator + name + ".jpg";
+				String result = new PrintUtils().drawImage(request.getSession().getServletContext().getRealPath("/") + "/" + tSStaff.getPhoto(), 1);
+				if (!"success".equals(result)) {
+                    message = "打印失败";
+                }
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			message = "打印失败";
 			throw new BusinessException(e.getMessage());
 		}
 		j.setMsg(message);
@@ -541,6 +580,12 @@ public class TSStaffController extends BaseController {
 						row.getCell(0).setCellType(HSSFCell.CELL_TYPE_STRING);
 						staff.setCardNo(row.getCell(0).getStringCellValue());
 					}
+                    TSStaffEntity exist = tSStaffService.findUniqueByProperty(TSStaffEntity.class, "cardNo", staff.getCardNo());
+					if (exist != null) {
+					    exist.setPrintStatus("second_check");
+					    tSStaffService.saveOrUpdate(exist);
+					    continue;
+                    }
 					//设置姓名
 					if (row.getCell(1) != null) {
 						row.getCell(1).setCellType(HSSFCell.CELL_TYPE_STRING);

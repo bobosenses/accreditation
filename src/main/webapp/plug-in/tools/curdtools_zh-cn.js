@@ -185,6 +185,48 @@ function deleteALLSelect(title,url,gname) {
 }
 
 /**
+ * 多记录刪除請求
+ * @param title
+ * @param url
+ * @param gname
+ * @return
+ */
+function printALLSelect(title,url,gname) {
+    gridname=gname;
+    var ids = [];
+    var rows = $("#"+gname).datagrid('getSelections');
+    if (rows.length > 0) {
+        $.dialog.setting.zIndex = getzIndex(true);
+        $.dialog.confirm('你确定打印该数据吗?', function(r) {
+            if (r) {
+                for ( var i = 0; i < rows.length; i++) {
+                    ids.push(rows[i].id);
+                }
+                $.ajax({
+                    url : url,
+                    type : 'post',
+                    data : {
+                        ids : ids.join(',')
+                    },
+                    cache : false,
+                    success : function(data) {
+                        var d = $.parseJSON(data);
+                        if (d.success) {
+                            var msg = d.msg;
+                            tip(msg);
+                            reloadTable();
+                            $("#"+gname).datagrid('unselectAll');
+                            ids='';
+                        }
+                    }
+                });
+            }
+        });
+    } else {
+        tip("请选择需要打印的数据");
+    }
+}
+/**
  * 查看时的弹出窗口
  * 
  * @param title

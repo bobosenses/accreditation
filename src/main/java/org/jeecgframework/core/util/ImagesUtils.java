@@ -11,20 +11,19 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
+import com.jeecg.ajjzz.entity.TSStaffEntity;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.PixelGrabber;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
@@ -42,51 +41,42 @@ public class ImagesUtils {
 
 	private static final String[] IMAGES_SUFFIXES = { "bmp", "jpg", "jpeg", "gif", "png", "tiff" };
 
-	private static final String backPicPath = "http://ozjx9t101.bkt.clouddn.com/card.jpg";
-	//证书头像宽RECOMMONED
-	private static final int RECOMMONED_HEAD_WIDTH = 108;
-	//证书头像高
-	private static final int RECOMMONED_HEAD_HEIGHT = 108;
-	//证书二维码宽
-	private static final int RECOMMONED_QR_WIDTH = 188;
-	//证书二维码高
-	private static final int RECOMMONED_QR_HEIGHT = 188;
-	//证书图片头像x距离
-	private static final int RECOMMONED_HEAD_X = 85;
-	//证书图片头像y距离
-	private static final int RECOMMONED_HEAD_Y = 87;
+	private static final String backPicPath = "http://ozjx9t101.bkt.clouddn.com/card_ok.png";
+
+//	图片尺寸   850  540
+
+	//标准行距
+	private static final int line = 51;
 	//证书图片二维码x距离
-	private static final int RECOMMONED_QR_X = 400;
+	private static final int CERTIFICATE_QR_X = 40;
 	//证书图片二维码y距离
-	private static final int RECOMMONED_QR_Y = 840;
-	//证书头像宽RECOMMONED
-	private static final int CERTIFICATE_HEAD_WIDTH = 110;
-	//证书头像高
-	private static final int CERTIFICATE_HEAD_HEIGHT = 110;
+	private static final int CERTIFICATE_QR_Y = 410;
 	//证书二维码宽
-	private static final int CERTIFICATE_QR_WIDTH = 188;
+	private static final int CERTIFICATE_QR_WIDTH = 100;
 	//证书二维码高
-	private static final int CERTIFICATE_QR_HEIGHT = 188;
-	//证书图片头像x距离
-	private static final int CERTIFICATE_HEAD_X = 148;
-	//证书图片头像y距离
-	private static final int CERTIFICATE_HEAD_Y = 286;
-	//证书图片二维码x距离
-	private static final int CERTIFICATE_QR_X = 550;
-	//证书图片二维码y距离
-	private static final int CERTIFICATE_QR_Y = 270;
+	private static final int CERTIFICATE_QR_HEIGHT = 100;
+	//证书头像二维码x距离
+	private static final int CERTIFICATE_PHOTO_X = 590;
+	//证书头像二维码y距离
+	private static final int CERTIFICATE_PHOTO_Y = 55;
+	//证书头像宽
+	private static final int CERTIFICATE_PHOTO_WIDTH = 220;
+	//证书头像高
+	private static final int CERTIFICATE_PHOTO_HEIGHT = 320;
 	//证书首个信息x距离
-	private static final int CERTIFICATE_TEXT_X = 308;
+	private static final int CERTIFICATE_TEXT_X = 47;
 	//证书首个信息y距离
-	private static final int CERTNIFICATE_TEXT_Y = 215;
+	private static final int CERTNIFICATE_TEXT_Y = 53;
 	//证书信息字体
 	private static final String CERTIFICATE_TEXT = "黑体";
 	//证书信息字号
-	private static final int CERTIFICATE_TEXT_SIZE = 32;
+	private static final int CERTIFICATE_TEXT_SIZE = 28;
 	//证书信息行高
-	private static final int CERTIFICATE_TEXT_ROW_HEIGHT = 55;
+	private static final int CERTIFICATE_TEXT_ROW_HEIGHT = 65;
 	//证书信息字体颜色
 	private static final String CERTIFICATE_TEXT_COLOR = "#000000";
+	//证书标题字体颜色
+	private static final String CERTIFICATE_TEXT_TITLE_COLOR = "#074d74";
 
 	/**
 	 * 是否是图片附件
@@ -103,7 +93,6 @@ public class ImagesUtils {
 	/**
 	 * 合成志愿证书图片
 	 *
-	 * @param headPicUrl  头像url
 	 * @param qrCodeText  二维码内容（志愿者编号）
 	 * @param name        姓名
 	 * @param sex         性别
@@ -113,29 +102,85 @@ public class ImagesUtils {
 	 * @throws IOException
 	 * @throws WriterException
 	 */
-	public static BufferedImage imagesSynthesis(String qrCodeText, String name,
-												String sex, String address, String date, String no) throws IOException, WriterException {
+	public static BufferedImage imagesSynthesis(String qrCodeText, TSStaffEntity staff, HttpServletRequest request) throws IOException, WriterException {
 		// 读取图片
 		Image backImage = ImagesUtils.loadImageUrl(backPicPath);
 		// 各个图片的高/宽度
 		int bWidth = backImage.getWidth(null);
 		int bHeight = backImage.getHeight(null);
 		// 处理背景图片信息
-		backImage = ImagesUtils.pressText(name, backImage, CERTIFICATE_TEXT, Font.BOLD,
-				ImagesUtils.String2Color(CERTIFICATE_TEXT_COLOR), CERTIFICATE_TEXT_SIZE, CERTIFICATE_TEXT_X,
+		//证号标题
+		backImage = ImagesUtils.pressText("证  号:", backImage, CERTIFICATE_TEXT, Font.BOLD,
+				ImagesUtils.String2Color(CERTIFICATE_TEXT_TITLE_COLOR), CERTIFICATE_TEXT_SIZE, CERTIFICATE_TEXT_X,
                 CERTNIFICATE_TEXT_Y, 1);
-		backImage = ImagesUtils.pressText(sex, backImage, CERTIFICATE_TEXT, Font.BOLD,
-				ImagesUtils.String2Color(CERTIFICATE_TEXT_COLOR), CERTIFICATE_TEXT_SIZE, CERTIFICATE_TEXT_X,
+		//证号
+		backImage = ImagesUtils.pressText(staff.getCardNo(), backImage, CERTIFICATE_TEXT, Font.BOLD,
+				ImagesUtils.String2Color(CERTIFICATE_TEXT_COLOR), CERTIFICATE_TEXT_SIZE, CERTIFICATE_TEXT_X + 120,
+				CERTNIFICATE_TEXT_Y, 1);
+		//姓名
+		backImage = ImagesUtils.pressText("姓  名:", backImage, CERTIFICATE_TEXT, Font.BOLD,
+				ImagesUtils.String2Color(CERTIFICATE_TEXT_TITLE_COLOR), CERTIFICATE_TEXT_SIZE, CERTIFICATE_TEXT_X,
                 CERTNIFICATE_TEXT_Y + CERTIFICATE_TEXT_ROW_HEIGHT, 1);
-		backImage = ImagesUtils.pressText(address, backImage, CERTIFICATE_TEXT, Font.BOLD,
-				ImagesUtils.String2Color(CERTIFICATE_TEXT_COLOR), CERTIFICATE_TEXT_SIZE, CERTIFICATE_TEXT_X,
+		//姓名
+		backImage = ImagesUtils.pressText(staff.getRealName(), backImage, CERTIFICATE_TEXT, Font.BOLD,
+				ImagesUtils.String2Color(CERTIFICATE_TEXT_COLOR), CERTIFICATE_TEXT_SIZE, CERTIFICATE_TEXT_X + 120,
+				CERTNIFICATE_TEXT_Y + CERTIFICATE_TEXT_ROW_HEIGHT, 1);
+		//性别
+		backImage = ImagesUtils.pressText("性  别:", backImage, CERTIFICATE_TEXT, Font.BOLD,
+				ImagesUtils.String2Color(CERTIFICATE_TEXT_TITLE_COLOR), CERTIFICATE_TEXT_SIZE, CERTIFICATE_TEXT_X + 306,
+                CERTNIFICATE_TEXT_Y + CERTIFICATE_TEXT_ROW_HEIGHT, 1);
+		//性别
+		backImage = ImagesUtils.pressText(staff.getSex(), backImage, CERTIFICATE_TEXT, Font.BOLD,
+				ImagesUtils.String2Color(CERTIFICATE_TEXT_COLOR), CERTIFICATE_TEXT_SIZE, CERTIFICATE_TEXT_X + 440,
+				CERTNIFICATE_TEXT_Y + CERTIFICATE_TEXT_ROW_HEIGHT, 1);
+		//作业类别
+		backImage = ImagesUtils.pressText("工作类别:", backImage, CERTIFICATE_TEXT, Font.BOLD,
+				ImagesUtils.String2Color(CERTIFICATE_TEXT_TITLE_COLOR), CERTIFICATE_TEXT_SIZE - 2, CERTIFICATE_TEXT_X,
                 CERTNIFICATE_TEXT_Y + CERTIFICATE_TEXT_ROW_HEIGHT * 2, 1);
-		backImage = ImagesUtils.pressText(date, backImage, CERTIFICATE_TEXT, Font.BOLD,
-				ImagesUtils.String2Color(CERTIFICATE_TEXT_COLOR), CERTIFICATE_TEXT_SIZE - 2, CERTIFICATE_TEXT_X,
+		//作业类别
+		backImage = ImagesUtils.pressText(staff.getWorkType(), backImage, CERTIFICATE_TEXT, Font.BOLD,
+				ImagesUtils.String2Color(CERTIFICATE_TEXT_COLOR), CERTIFICATE_TEXT_SIZE - 2, CERTIFICATE_TEXT_X + 140,
+				CERTNIFICATE_TEXT_Y + CERTIFICATE_TEXT_ROW_HEIGHT * 2, 1);
+		//准操项目
+		backImage = ImagesUtils.pressText("准操项目:", backImage, CERTIFICATE_TEXT, Font.BOLD,
+				ImagesUtils.String2Color(CERTIFICATE_TEXT_TITLE_COLOR), CERTIFICATE_TEXT_SIZE - 2, CERTIFICATE_TEXT_X,
                 CERTNIFICATE_TEXT_Y + CERTIFICATE_TEXT_ROW_HEIGHT * 3, 1);
-		backImage = ImagesUtils.pressText(no, backImage, CERTIFICATE_TEXT, Font.BOLD,
-				ImagesUtils.String2Color(CERTIFICATE_TEXT_COLOR), CERTIFICATE_TEXT_SIZE - 2, CERTIFICATE_TEXT_X,
-                CERTNIFICATE_TEXT_Y + CERTIFICATE_TEXT_ROW_HEIGHT * 4, 1);
+		//准操项目
+		backImage = ImagesUtils.pressText(staff.getAllowProject(), backImage, CERTIFICATE_TEXT, Font.BOLD,
+				ImagesUtils.String2Color(CERTIFICATE_TEXT_COLOR), CERTIFICATE_TEXT_SIZE - 2, CERTIFICATE_TEXT_X + 140,
+				CERTNIFICATE_TEXT_Y + CERTIFICATE_TEXT_ROW_HEIGHT * 3, 1);
+		//初领日期
+		backImage = ImagesUtils.pressText("初领日期:", backImage, CERTIFICATE_TEXT, Font.BOLD,
+				ImagesUtils.String2Color(CERTIFICATE_TEXT_TITLE_COLOR), CERTIFICATE_TEXT_SIZE - 2, CERTIFICATE_TEXT_X,
+				CERTNIFICATE_TEXT_Y + CERTIFICATE_TEXT_ROW_HEIGHT * 4, 1);
+		//初领日期
+		backImage = ImagesUtils.pressText(staff.getFirstGetDate(), backImage, CERTIFICATE_TEXT, Font.BOLD,
+				ImagesUtils.String2Color(CERTIFICATE_TEXT_COLOR), CERTIFICATE_TEXT_SIZE - 2, CERTIFICATE_TEXT_X + 140,
+				CERTNIFICATE_TEXT_Y + CERTIFICATE_TEXT_ROW_HEIGHT * 4, 1);
+		//有效日期
+		backImage = ImagesUtils.pressText("有效日期:", backImage, CERTIFICATE_TEXT, Font.BOLD,
+				ImagesUtils.String2Color(CERTIFICATE_TEXT_TITLE_COLOR), CERTIFICATE_TEXT_SIZE - 2, CERTIFICATE_TEXT_X,
+				CERTNIFICATE_TEXT_Y + CERTIFICATE_TEXT_ROW_HEIGHT * 5, 1);
+		//有效日期
+		backImage = ImagesUtils.pressText(staff.getFirstGetDate() + "--" + staff.getSecondRecheckDate(), backImage, CERTIFICATE_TEXT, Font.BOLD,
+				ImagesUtils.String2Color(CERTIFICATE_TEXT_COLOR), CERTIFICATE_TEXT_SIZE - 2, CERTIFICATE_TEXT_X + 140,
+				CERTNIFICATE_TEXT_Y + CERTIFICATE_TEXT_ROW_HEIGHT * 5, 1);
+		//第一次复审
+		backImage = ImagesUtils.pressText("第一次复审:", backImage, CERTIFICATE_TEXT, Font.BOLD,
+				ImagesUtils.String2Color(CERTIFICATE_TEXT_TITLE_COLOR), CERTIFICATE_TEXT_SIZE - 2, CERTIFICATE_TEXT_X + 110,
+				CERTNIFICATE_TEXT_Y + 420, 1);
+		//第一次复审
+		backImage = ImagesUtils.pressText(staff.getFirstRecheckDate(), backImage, CERTIFICATE_TEXT, Font.BOLD,
+				ImagesUtils.String2Color(CERTIFICATE_TEXT_COLOR), CERTIFICATE_TEXT_SIZE - 2, CERTIFICATE_TEXT_X + 150 + 110,
+				CERTNIFICATE_TEXT_Y + 420, 1);
+		//第二次复审
+		backImage = ImagesUtils.pressText("第二次复审:", backImage, CERTIFICATE_TEXT, Font.BOLD,
+				ImagesUtils.String2Color(CERTIFICATE_TEXT_TITLE_COLOR), CERTIFICATE_TEXT_SIZE - 2, CERTIFICATE_TEXT_X + 280 + 110,
+				CERTNIFICATE_TEXT_Y + 420, 1);
+		//第二次复审
+		backImage = ImagesUtils.pressText(staff.getSecondRecheckDate(), backImage, CERTIFICATE_TEXT, Font.BOLD,
+				ImagesUtils.String2Color(CERTIFICATE_TEXT_COLOR), CERTIFICATE_TEXT_SIZE - 2, CERTIFICATE_TEXT_X + 430 + 110,
+				CERTNIFICATE_TEXT_Y + 420, 1);
 		int alphaType = BufferedImage.TYPE_INT_RGB;
 		// 画图
 		BufferedImage backgroundImage = new BufferedImage(bWidth, bHeight, alphaType);
@@ -145,6 +190,12 @@ public class ImagesUtils {
 //		graphics2D.drawImage(headImage, CERTIFICATE_HEAD_X, CERTIFICATE_HEAD_Y, CERTIFICATE_HEAD_WIDTH, CERTIFICATE_HEAD_HEIGHT, null);
 		//生成二维码
 		Image qrCodeImage = ImagesUtils.getQrCodeImage(CERTIFICATE_QR_WIDTH, CERTIFICATE_QR_HEIGHT, qrCodeText);
+		//头像图片
+		File aa = new File(request.getSession().getServletContext().getRealPath("/") + "/" + "upload" + File.separator + staff.getRealName() + "_" + staff.getCardNo() + ".jpg");
+		InputStream is=new FileInputStream(aa);
+		BufferedImage bi=ImageIO.read(is);
+		Image im=(Image)bi;
+		graphics2D.drawImage(im, CERTIFICATE_PHOTO_X, CERTIFICATE_PHOTO_Y, CERTIFICATE_PHOTO_WIDTH, CERTIFICATE_PHOTO_HEIGHT, null);
 		graphics2D.drawImage(qrCodeImage, CERTIFICATE_QR_X, CERTIFICATE_QR_Y, CERTIFICATE_QR_WIDTH, CERTIFICATE_QR_HEIGHT, null);
 
 
@@ -330,7 +381,7 @@ public class ImagesUtils {
 		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		Graphics2D g = image.createGraphics();
 		g.drawImage(targetImg, 0, 0, width, height, null);
-		g.setColor(color);// 颜色
+		g.setColor(color.darker());// 颜色
 		g.setFont(font);
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, alpha));
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
