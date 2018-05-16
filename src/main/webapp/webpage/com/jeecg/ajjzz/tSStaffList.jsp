@@ -20,6 +20,9 @@
    <t:dgCol title="卡MAC码"  field="cardMac"  queryMode="group"  width="300" showLen = "300"></t:dgCol>
    <t:dgCol title="证号"  field="cardNo"  queryMode="group"  width="200"></t:dgCol>
    <t:dgCol title="姓名"  field="realName"  queryMode="group"  width="200"></t:dgCol>
+   <t:dgCol title="初领日期"  field="firstGetDate"  queryMode="group"  width="300"></t:dgCol>
+   <t:dgCol title="复审日期"  field="firstRecheckDate"  queryMode="group"  width="300"></t:dgCol>
+   <t:dgCol title="换卡日期"  field="alidityPeriodEnd"  queryMode="group"  width="300"></t:dgCol>
    <t:dgCol title="证件标记"  field="printStatus" dictionary="card_state" queryMode="single" query="true"  width="400"></t:dgCol>
    <t:dgCol title="性别"  field="sex"  queryMode="group"  width="200"></t:dgCol>
    <t:dgCol title="证件状态"  field="checkType" dictionary="check_type" queryMode="single" query="true"  width="400"></t:dgCol>
@@ -30,7 +33,6 @@
    <t:dgCol title="发证机关"  field="certificateOffice"  queryMode="group"  width="300"></t:dgCol>
    <t:dgCol title="理论成绩"  field="theoryScore"  queryMode="group"  width="300"></t:dgCol>
    <t:dgCol title="实操成绩"  field="skillScore"  queryMode="group"  width="300"></t:dgCol>
-   <t:dgCol title="初领日期"  field="firstGetDate"  queryMode="group"  width="300"></t:dgCol>
    <t:dgCol title="发证日期"  field="licenceDate"  queryMode="group"  width="300"></t:dgCol>
    <t:dgCol title="有效期从"  field="alidityPeriodStart"  queryMode="group"  width="300"></t:dgCol>
    <t:dgCol title="有效期到"  field="alidityPeriodEnd"  queryMode="group"  width="300"></t:dgCol>

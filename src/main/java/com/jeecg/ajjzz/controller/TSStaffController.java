@@ -372,6 +372,19 @@ public class TSStaffController extends BaseController {
 				);
 //                request.getSession().getServletContext().getRealPath("/") + "/" + path + File.separator + name + ".jpg";
 				String result = new PrintUtils().drawImage(request.getSession().getServletContext().getRealPath("/") + "/" + tSStaff.getPhoto(), 1);
+				// 已换卡 had_trans
+				// 待换卡  wait_trans
+				// 已领卡  had_get
+				// 待领卡  wait_get
+				// 复审通过  second_check
+				// 复审  wait_recheck
+				// 初审通过  first_check
+				if (DateUtils.parseCalendar(tSStaff.getFirstGetDate(), "yyyy-MM-dd").getTime().getTime() < System.currentTimeMillis()) {
+					tSStaff.setCheckType("had_get");
+				}
+				if (DateUtils.parseCalendar(tSStaff.getAlidityPeriodEnd(), "yyyy-MM-dd").getTime().getTime() < System.currentTimeMillis()) {
+					tSStaff.setCheckType("had_trans");
+				}
 				if (!"success".equals(result)) {
                     message = "打印失败";
                 }
@@ -582,6 +595,16 @@ public class TSStaffController extends BaseController {
 					}
                     TSStaffEntity exist = tSStaffService.findUniqueByProperty(TSStaffEntity.class, "cardNo", staff.getCardNo());
 					if (exist != null) {
+						// 已换卡 had_trans
+						// 待换卡  wait_trans
+						// 已领卡  had_get
+						// 待领卡  wait_get
+						// 复审通过  second_check
+						// 复审  wait_recheck
+						// 初审通过  first_check
+						if (DateUtils.parseCalendar(staff.getSecondRecheckDate(), "yyyy-MM-dd").getTime().getTime() < System.currentTimeMillis()) {
+							staff.setCheckType("wait_trans");
+						}
 					    exist.setPrintStatus("second_check");
 					    tSStaffService.saveOrUpdate(exist);
 					    continue;
@@ -762,6 +785,8 @@ public class TSStaffController extends BaseController {
 //						staff.setCardNo(row.getCell(35).getStringCellValue());
 					}
 
+
+					staff.setCheckType("wait_get");
 					//设置头像
 					staff.setPhoto("upload/" + staff.getRealName() + "_" +staff.getCardNo() + ".jpg");
 					//设置状态为未打印
