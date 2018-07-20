@@ -544,6 +544,7 @@ public class DateUtils extends PropertyEditorSupport {
 	public static Calendar parseCalendar(String src, String pattern)
 			throws ParseException {
 
+		src = src.substring(0,4) + "-" + src.substring(4,6) + "-" + src.substring(6,8);
 		Date date = parseDate(src, pattern);
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);

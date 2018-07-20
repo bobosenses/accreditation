@@ -653,6 +653,7 @@ public class UserController extends BaseController {
 		departNew.setMobile(user.getMobilePhone());
 		departNew.setDepartname(user.getRealName());
 		departNew.setCreateName(user.getUserName());
+		departNew.setDepartOrder("10");
 		String localMaxCode  = getMaxLocalCode(null);
 		departNew.setOrgCode(YouBianCodeUtil.getNextYouBianCode(localMaxCode));
 		userService.save(departNew);

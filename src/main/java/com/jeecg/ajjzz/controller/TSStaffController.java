@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.baomidou.kisso.common.encrypt.MD5;
 import com.google.zxing.WriterException;
+import com.jeecg.ajjzz.entity.PrintView;
 import com.jeecg.ajjzz.entity.TSStaffGroupEntity;
 import com.jeecg.ajjzz.service.TSStaffGroupServiceI;
 import org.apache.log4j.Logger;
@@ -361,17 +362,38 @@ public class TSStaffController extends BaseController {
 	 */
 	@RequestMapping(params = "printAll")
 	@ResponseBody
-	public AjaxJson printAll(String ids,HttpServletRequest request){
+	public AjaxJson printAll(String ids,String cardNo, HttpServletRequest request){
 		String message = null;
 		AjaxJson j = new AjaxJson();
+		Long batch = System.currentTimeMillis();
 		message = "打印成功";
+		if (ids == null && cardNo != null) {
+			TSStaffEntity tSStaff = systemService.findUniqueByProperty(TSStaffEntity.class, "cardNo", cardNo);
+			if (tSStaff != null) {
+				ids = tSStaff.getId().toString() + ",";
+			}
+		}
+		List<PrintView> printViewList = new ArrayList<>();
 		try{
 			for(String id:ids.split(",")){
 				TSStaffEntity tSStaff = systemService.getEntity(TSStaffEntity.class,
 						new Long(id)
 				);
-//                request.getSession().getServletContext().getRealPath("/") + "/" + path + File.separator + name + ".jpg";
-				String result = new PrintUtils().drawImage(request.getSession().getServletContext().getRealPath("/") + "/" + tSStaff.getPhoto(), 1);
+				tSStaff.setBatch(batch);
+				tSStaffService.saveOrUpdate(tSStaff);
+				if (tSStaff != null) {
+					PrintView printView = new PrintView();
+					printView.setCardNo(tSStaff.getCardNo());
+					printView.setSex(tSStaff.getSex());
+					printView.setRealName(tSStaff.getRealName());
+					printView.setWorkType(tSStaff.getWorkType());
+					printView.setAllowProject(tSStaff.getAllowProject());
+					printView.setFirstGetDate(tSStaff.getFirstGetDate());
+					printView.setFirstRecheckDate(tSStaff.getFirstRecheckDate());
+					printView.setCode(request.getSession().getServletContext().getRealPath("/") + "/upload/" + tSStaff.getRealName() + "_" + tSStaff.getCardNo().substring(1, tSStaff.getCardNo().length()) + "_qr.jpg");
+					printView.setPhoto(request.getSession().getServletContext().getRealPath("/") + "/" + tSStaff.getPhoto());
+					printViewList.add(printView);
+				}
 				// 已换卡 had_trans
 				// 待换卡  wait_trans
 				// 已领卡  had_get
@@ -379,21 +401,23 @@ public class TSStaffController extends BaseController {
 				// 复审通过  second_check
 				// 复审  wait_recheck
 				// 初审通过  first_check
-				if (DateUtils.parseCalendar(tSStaff.getFirstGetDate(), "yyyy-MM-dd").getTime().getTime() < System.currentTimeMillis()) {
-					tSStaff.setCheckType("had_get");
-				}
-				if (DateUtils.parseCalendar(tSStaff.getAlidityPeriodEnd(), "yyyy-MM-dd").getTime().getTime() < System.currentTimeMillis()) {
-					tSStaff.setCheckType("had_trans");
-				}
-				if (!"success".equals(result)) {
-                    message = "打印失败";
-                }
+//				if (DateUtils.parseCalendar(tSStaff.getFirstGetDate(), "yyyy-MM-dd").getTime().getTime() < System.currentTimeMillis()) {
+//					tSStaff.setCheckType("had_get");
+//				}
+//				if (DateUtils.parseCalendar(tSStaff.getAlidityPeriodEnd(), "yyyy-MM-dd").getTime().getTime() < System.currentTimeMillis()) {
+//					tSStaff.setCheckType("had_trans");
+//				}
+//				if (!"success".equals("error")) {
+//                    message = "打印失败";
+//                }
 			}
 		}catch(Exception e){
 			e.printStackTrace();
 			message = "打印失败";
 			throw new BusinessException(e.getMessage());
 		}
+		j.setObj(printViewList);
+		message = String.valueOf(batch);
 		j.setMsg(message);
 		return j;
 	}
@@ -591,7 +615,14 @@ public class TSStaffController extends BaseController {
 					//设置证号
 					if (row.getCell(0) != null) {
 						row.getCell(0).setCellType(HSSFCell.CELL_TYPE_STRING);
-						staff.setCardNo(row.getCell(0).getStringCellValue());
+						String cardNo = row.getCell(0).getStringCellValue();
+						// 查询正好是否包含"T" 不包含则在最前面增加"T"
+						if ("T".equals(cardNo.substring(0,1))) {
+							staff.setCardNo(cardNo);
+						} else {
+							staff.setCardNo("T" + cardNo);
+						}
+
 					}
                     TSStaffEntity exist = tSStaffService.findUniqueByProperty(TSStaffEntity.class, "cardNo", staff.getCardNo());
 					if (exist != null) {
@@ -602,7 +633,7 @@ public class TSStaffController extends BaseController {
 						// 复审通过  second_check
 						// 复审  wait_recheck
 						// 初审通过  first_check
-						if (DateUtils.parseCalendar(staff.getSecondRecheckDate(), "yyyy-MM-dd").getTime().getTime() < System.currentTimeMillis()) {
+						if (staff.getSecondRecheckDate() != null && DateUtils.parseCalendar(staff.getSecondRecheckDate(), "yyyy-MM-dd").getTime().getTime() < System.currentTimeMillis()) {
 							staff.setCheckType("wait_trans");
 						}
 					    exist.setPrintStatus("second_check");
@@ -935,4 +966,45 @@ public class TSStaffController extends BaseController {
 
 		return returnCode;
 	}
+
+	@RequestMapping(value = "printState", method = RequestMethod.GET)
+	@ResponseBody
+	public AjaxJson printState(String cardNo, String batch) {
+		String message = null;
+		AjaxJson j = new AjaxJson();
+		message = "打印完毕！";
+//		if (cardNo != null) {
+//			cardNo = "T" + cardNo;
+//		}
+		TSStaffEntity tsStaffEntity = systemService.findUniqueByProperty(TSStaffEntity.class, "cardNo", cardNo);
+		tsStaffEntity.setPrintStatus("had_print");
+		tSStaffService.updateEntitie(tsStaffEntity);
+		CriteriaQuery cq = new CriteriaQuery(TSStaffEntity.class);
+		cq.eq("printStatus", "not_print");
+		cq.eq("batch", Long.valueOf(batch));
+		cq.add();
+		List<TSStaffEntity> listTSStaffs = tSStaffService.getListByCriteriaQuery(cq, false);
+		j.setObj(listTSStaffs.size());
+		System.out.println("++++++++++++++++++++++++++++++++++++++++++++" + listTSStaffs.size() + "------------------------------");
+		return j;
+	}
+
+//	@RequestMapping(value = "end", method = RequestMethod.GET)
+//	@ResponseBody
+//	public AjaxJson end(String cardNo, String batch) {
+//		Long batchNo = Long.valueOf(batch);
+//		String message = null;
+//		AjaxJson j = new AjaxJson();
+//		message = "打印完毕！";
+//		try{
+//			List<TSStaffEntity> listTSStaffs=tSStaffService.findByProperty(TSStaffEntity.class, "batch", batchNo);
+//			systemService.addLog(message, Globals.Log_Type_INSERT, Globals.Log_Leavel_INFO);
+//		}catch(Exception e){
+//			e.printStackTrace();
+//			message = "发证人员名单添加失败";
+//			throw new BusinessException(e.getMessage());
+//		}
+//		j.setMsg(message);
+//		return j;
+//	}
 }

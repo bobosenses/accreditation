@@ -8,7 +8,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.codec.digest.Md5Crypt;
 import org.jeecgframework.core.beanvalidator.BeanValidators;
+import org.jeecgframework.core.util.AESUtil;
 import org.jeecgframework.core.util.ImagesUtils;
+import org.jeecgframework.p3.core.common.utils.StringUtil;
 import org.jeecgframework.p3.core.util.MD5Util;
 import org.jeecgframework.web.system.pojo.base.TSUser;
 import org.jeecgframework.web.system.service.UserService;
@@ -59,10 +61,16 @@ public class CodeRestController {
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	@ResponseBody
-	public String valid (String code, HttpServletRequest request, HttpServletResponse response) throws IOException {
-		TSStaffEntity staff = tSStaffService.findUniqueByProperty(TSStaffEntity.class, "id", new Long(code));
+	public String valid (String code, HttpServletRequest request, HttpServletResponse response) throws java.lang.Exception {
+		if (StringUtil.isEmpty(code)) {
+			return "code不能为空！";
+		}
+		if (code.contains(" ")) {
+			code = code.replace(" ", "+");
+		}
+		TSStaffEntity staff = tSStaffService.findUniqueByProperty(TSStaffEntity.class, "id", new Long(AESUtil.decodeId(code)));
 		if (staff == null) {
-			return "验证未通过， 没有查找到信息!";
+			return "验证未通过，没有查找到信息!";
 		}
 		//获取请求协议
 		String http = request.getScheme();        //返回"http"
@@ -89,7 +97,7 @@ public class CodeRestController {
 	 */
 	@RequestMapping(value = "/getQrCodeImage", method = RequestMethod.GET)
 	@ResponseBody
-	public void getQrCodeImage(String id,HttpServletRequest request, HttpServletResponse response) throws WriterException, IOException {
+	public void getQrCodeImage(String id,HttpServletRequest request, HttpServletResponse response) throws Exception {
 		response.setDateHeader("Expires", 0L);
 		response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
 		response.addHeader("Cache-Control", "post-check=0, pre-check=0");

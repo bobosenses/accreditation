@@ -1,5 +1,6 @@
 package com.jeecg.ajjzz.entity;
 
+import java.beans.Transient;
 import java.lang.String;
 import java.lang.Integer;
 import javax.persistence.Column;
@@ -133,6 +134,9 @@ public class TSStaffEntity implements java.io.Serializable {
 	private String checkType;
 
 	private String groupOrg;
+
+	private Long batch;
+
 	/**
 	 *方法: 取得java.lang.Integer
 	 *@return: java.lang.Integer  id
@@ -749,5 +753,14 @@ public class TSStaffEntity implements java.io.Serializable {
 
 	public void setGroupOrg(String groupOrg) {
 		this.groupOrg = groupOrg;
+	}
+
+	@Column(name ="batch_",nullable=true,length=19)
+	public Long getBatch() {
+		return batch;
+	}
+
+	public void setBatch(Long batch) {
+		this.batch = batch;
 	}
 }

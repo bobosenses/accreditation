@@ -26,7 +26,7 @@
 <div class="row  border-bottom white-bg dashboard-header">
     <div class="col-sm-12">
         <blockquote class="text-warning" style="font-size:14px">
-            欢迎使用信息打印平台
+            欢迎使用山西省特种作业人员制证管理系统
         </blockquote>
         <hr>
     </div>

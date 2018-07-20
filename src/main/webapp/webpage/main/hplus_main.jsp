@@ -15,7 +15,7 @@
     <meta name="renderer" content="webkit">
 
     <%--<title><t:mutiLang langKey="jeect.platform"/></title>--%>
-    <title>山西安监局制证系统</title>
+    <title>山西省特种作业人员制证管理系统</title>
     <meta name="keywords" content="JEECG 企业级快速开发平台">
     <meta name="description" content="JEECG 企业级快速开发平台，她采用强大代码生成，在线开发能力">
 
@@ -84,9 +84,9 @@
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header" style="height: 60px;"><a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
-                    <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
+                    <form role="search" class="navbar-form-custom" method="post" action="search_results.html" style="width: 300px;">
                         <div class="form-group">
-                            <input type="text" placeholder="欢迎使用信息打印平台 …" class="form-control" name="top-search" id="top-search">
+                            <input type="text" placeholder="欢迎使用山西省特种作业人员制证管理系统" class="form-control" name="top-search" id="top-search">
                         </div>
                     </form>
                 </div>
@@ -215,7 +215,7 @@
             <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="loginController.do?hplushome" frameborder="0" data-id="loginController.do?hplushome" seamless></iframe>
         </div>
         <div class="footer" style="border-top:none;">
-            <div class="pull-right">&copy; 山西省安监局
+            <div class="pull-right">&copy; 山西省安全生产监督管理局
             </div>
         </div>        
     </div>

@@ -5,7 +5,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<%--<title><t:mutiLang langKey="jeect.platform"/></title>--%>
-        <title>山西安监局制证系统</title>
+        <title>山西省特种作业人员制证管理系统</title>
 		<meta name="keywords" content="<t:mutiLang langKey="jeect.platform"/>" />
 		<meta name="description" content="<t:mutiLang langKey="jeect.platform"/>" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -62,7 +62,7 @@
 					<a href="#" class="navbar-brand">
 						<small>
 							<i class="icon-leaf"></i>
-							山西省质量安全监督管理局
+							山西省安全生产监督管理局
 						</small>
 					</a><!-- /.brand -->
 				</div><!-- /.navbar-header -->
@@ -143,66 +143,66 @@
 							</ul>
 						</li>-->
 
-						<li class="purple">
-							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
-								<i class="icon-bell-alt icon-animated-bell"></i>
-								<span class="badge badge-important" id="noticeCount">0</span>
-							</a>
+						<%--<li class="purple">--%>
+							<%--<a data-toggle="dropdown" class="dropdown-toggle" href="#">--%>
+								<%--<i class="icon-bell-alt icon-animated-bell"></i>--%>
+								<%--<span class="badge badge-important" id="noticeCount">0</span>--%>
+							<%--</a>--%>
 
-							<ul class="pull-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
-								<li class="dropdown-header" id="noticeTip">
-									<i class="icon-warning-sign"></i>
-									0条公告
-								</li>
-								<li >
-									<ul id="noticeContent">
-										ajax加载
-									</ul>
-								</li>
+							<%--<ul class="pull-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">--%>
+								<%--<li class="dropdown-header" id="noticeTip">--%>
+									<%--<i class="icon-warning-sign"></i>--%>
+									<%--0条公告--%>
+								<%--</li>--%>
+								<%--<li >--%>
+									<%--<ul id="noticeContent">--%>
+										<%--ajax加载--%>
+									<%--</ul>--%>
+								<%--</li>--%>
 
-								<li>
-									<a href="#" id="noticeContentLink">
-									</a>
-								</li>
-								<li>
-									<a href="javascript:goAllNotice();" id="noticeFooter">
-										查看全部
-										<i class="icon-arrow-right"></i>
-									</a>
-								</li>
-							</ul>
-						</li>
+								<%--<li>--%>
+									<%--<a href="#" id="noticeContentLink">--%>
+									<%--</a>--%>
+								<%--</li>--%>
+								<%--<li>--%>
+									<%--<a href="javascript:goAllNotice();" id="noticeFooter">--%>
+										<%--查看全部--%>
+										<%--<i class="icon-arrow-right"></i>--%>
+									<%--</a>--%>
+								<%--</li>--%>
+							<%--</ul>--%>
+						<%--</li>--%>
 
-						<li class="green">
-							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
-								<i class="icon-envelope icon-animated-vertical"></i>
-								<span class="badge badge-success" id="messageCount">0</span>
-							</a>
+						<%--<li class="green">--%>
+							<%--<a data-toggle="dropdown" class="dropdown-toggle" href="#">--%>
+								<%--<i class="icon-envelope icon-animated-vertical"></i>--%>
+								<%--<span class="badge badge-success" id="messageCount">0</span>--%>
+							<%--</a>--%>
 
-							<ul class="pull-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
-								<li class="dropdown-header" id="messageTip">
-									<i class="icon-envelope-alt"></i>
-									0条消息
-								</li>
+							<%--<ul class="pull-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">--%>
+								<%--<li class="dropdown-header" id="messageTip">--%>
+									<%--<i class="icon-envelope-alt"></i>--%>
+									<%--0条消息--%>
+								<%--</li>--%>
 
-								<li>
-									<a href="#" id="messageContent">
-										
-									</a>
-								</li>
+								<%--<li>--%>
+									<%--<a href="#" id="messageContent">--%>
+										<%----%>
+									<%--</a>--%>
+								<%--</li>--%>
 
-								
+								<%----%>
 
-								<li>
-									<a href="javascript:goAllMessage();" id="messageFooter">
-										查看所有消息
-										<i class="icon-arrow-right"></i>
-									</a>
-								</li>
-							</ul>
-						</li> 
+								<%--<li>--%>
+									<%--<a href="javascript:goAllMessage();" id="messageFooter">--%>
+										<%--查看所有消息--%>
+										<%--<i class="icon-arrow-right"></i>--%>
+									<%--</a>--%>
+								<%--</li>--%>
+							<%--</ul>--%>
+						<%--</li> --%>
 
-						<li class="light-blue">
+						<li class="light-blue" style="width: 180px;">
 							<a data-toggle="dropdown" href="#" class="dropdown-toggle" onclick="bindFrameClick()">
 								<img class="nav-user-photo" src="plug-in/ace/avatars/avatar2.png" alt="Jason's Photo" />
 								<span class="user-info">
@@ -227,34 +227,34 @@
 										 <t:mutiLang langKey="common.profile"/>
 									</a>
 								</li>
-								<li>
-									<a href="javascript:openwindow('<t:mutiLang langKey="common.ssms.getSysInfos"/>','tSSmsController.do?getSysInfos')">
-										<i class="icon-cog"></i>
-										 <t:mutiLang langKey="common.ssms.getSysInfos"/>
-									</a>
-								</li>
-								<li>
-									<a href="javascript:add('<t:mutiLang langKey="common.change.style"/>','userController.do?changestyle','',550,250)">
-										<i class="icon-cog"></i>
-										 <t:mutiLang langKey="common.my.style"/>
-									</a>
-								</li>
-								
-								<li>
-									<a href="http://yun.jeecg.org" target="_blank">
-										<i class="icon-cloud"></i>
-										 云应用中心
-									</a>
-								</li>
-								
-								<li>
-									<a href="javascript:clearLocalstorage()">
-										<i class="icon-cog"></i>
-										<t:mutiLang langKey="common.clear.localstorage"/>
-									</a>
-								</li>
-		
-								<li class="divider"></li>
+								<%--<li>--%>
+									<%--<a href="javascript:openwindow('<t:mutiLang langKey="common.ssms.getSysInfos"/>','tSSmsController.do?getSysInfos')">--%>
+										<%--<i class="icon-cog"></i>--%>
+										 <%--<t:mutiLang langKey="common.ssms.getSysInfos"/>--%>
+									<%--</a>--%>
+								<%--</li>--%>
+								<%--<li>--%>
+									<%--<a href="javascript:add('<t:mutiLang langKey="common.change.style"/>','userController.do?changestyle','',550,250)">--%>
+										<%--<i class="icon-cog"></i>--%>
+										 <%--<t:mutiLang langKey="common.my.style"/>--%>
+									<%--</a>--%>
+								<%--</li>--%>
+								<%----%>
+								<%--<li>--%>
+									<%--<a href="http://yun.jeecg.org" target="_blank">--%>
+										<%--<i class="icon-cloud"></i>--%>
+										 <%--云应用中心--%>
+									<%--</a>--%>
+								<%--</li>--%>
+								<%----%>
+								<%--<li>--%>
+									<%--<a href="javascript:clearLocalstorage()">--%>
+										<%--<i class="icon-cog"></i>--%>
+										<%--<t:mutiLang langKey="common.clear.localstorage"/>--%>
+									<%--</a>--%>
+								<%--</li>--%>
+		<%----%>
+								<%--<li class="divider"></li>--%>
 
 								<li>
 									<a href="javascript:logout()">
@@ -285,23 +285,23 @@
 					</script>
 
 					<div class="sidebar-shortcuts" id="sidebar-shortcuts">
-						<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
-							<button class="btn btn-success">
-								<i class="icon-signal"></i>
-							</button>
+						<%--<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">--%>
+							<%--<button class="btn btn-success">--%>
+								<%--<i class="icon-signal"></i>--%>
+							<%--</button>--%>
 
-							<button class="btn btn-info">
-								<i class="icon-pencil"></i>
-							</button>
+							<%--<button class="btn btn-info">--%>
+								<%--<i class="icon-pencil"></i>--%>
+							<%--</button>--%>
 
-							<button class="btn btn-warning">
-								<i class="icon-group"></i>
-							</button>
+							<%--<button class="btn btn-warning">--%>
+								<%--<i class="icon-group"></i>--%>
+							<%--</button>--%>
 
-							<button class="btn btn-danger">
-								<i class="icon-cogs"></i>
-							</button>
-						</div>
+							<%--<button class="btn btn-danger">--%>
+								<%--<i class="icon-cogs"></i>--%>
+							<%--</button>--%>
+						<%--</div>--%>
 
 						<div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
 							<span class="btn btn-success"></span>

@@ -12,7 +12,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta charset="utf-8" />
   <%--<title><t:mutiLang langKey="jeect.platform"/></title>--%>
-  <title>山西省安监局制证系统</title>
+  <title>山西省特种作业人员 制证管理系统</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <!-- bootstrap & fontawesome -->
   <%--<link rel="shortcut icon" href="images/favicon.ico">--%>
@@ -52,7 +52,7 @@
           <div class="center">
             <h1 id="id-text2" class="grey">
               <i class="ace-icon fa fa-leaf green"></i>
-               山西省安监局制证系统
+               山西省特种作业人员 制证管理系统
             </h1>
             <%--<h4 class="blue" id="id-company-text">www.jeecg.org</h4>--%>
           </div>

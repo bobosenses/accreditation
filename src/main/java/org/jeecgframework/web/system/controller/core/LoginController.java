@@ -412,14 +412,14 @@ public class LoginController extends BaseController{
 				roles = roles.substring(0, roles.length() - 1);
 			}
 			
-            modelMap.put("roleName", roles.length()>3?roles.substring(0,3)+"...":roles);
-            modelMap.put("userName", user.getUserName().length()>5?user.getUserName().substring(0, 5)+"...":user.getUserName());
+            modelMap.put("roleName", roles.length()>8?roles.substring(0,8)+"...":roles);
+            modelMap.put("userName", user.getUserName().length()>12?user.getUserName().substring(0, 12)+"...":user.getUserName());
             modelMap.put("portrait", user.getPortrait());
 
             modelMap.put("currentOrgName", ClientManager.getInstance().getClient().getUser().getCurrentDepart().getDepartname());
 
-			
-			SysThemesEnum sysTheme = SysThemesUtil.getSysTheme(request);
+			// 固定首页风格 ace
+			SysThemesEnum sysTheme = SysThemesEnum.toEnum("ace");
 			if("fineui".equals(sysTheme.getStyle())|| "ace".equals(sysTheme.getStyle())||"diy".equals(sysTheme.getStyle())||"acele".equals(sysTheme.getStyle())||"hplus".equals(sysTheme.getStyle())){
 				request.setAttribute("menuMap", getFunctionMap(user));
 			}

@@ -185,6 +185,7 @@ function deleteALLSelect(title,url,gname) {
  * @return
  */
 function printALLSelect(title,url,gname) {
+	alert(gname);
     gridname=gname;
     var ids = [];
     var rows = $("#"+gname).datagrid('getSelections');
@@ -195,6 +196,7 @@ function printALLSelect(title,url,gname) {
                 for ( var i = 0; i < rows.length; i++) {
                     ids.push(rows[i].id);
                 }
+                console.log(ids);
                 $.ajax({
                     url : url,
                     type : 'post',

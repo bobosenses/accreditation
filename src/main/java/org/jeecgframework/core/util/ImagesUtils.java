@@ -14,6 +14,7 @@ import com.google.zxing.common.BitMatrix;
 import com.jeecg.ajjzz.entity.TSStaffEntity;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.tools.ant.taskdefs.Java;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -94,15 +95,10 @@ public class ImagesUtils {
 	 * 合成志愿证书图片
 	 *
 	 * @param qrCodeText  二维码内容（志愿者编号）
-	 * @param name        姓名
-	 * @param sex         性别
-	 * @param address     注册地点
-	 * @param date        注册日期
-	 * @param no          证书编号
 	 * @throws IOException
 	 * @throws WriterException
 	 */
-	public static BufferedImage imagesSynthesis(String qrCodeText, TSStaffEntity staff, HttpServletRequest request) throws IOException, WriterException {
+	public static BufferedImage imagesSynthesis(String qrCodeText, TSStaffEntity staff, HttpServletRequest request) throws IOException, WriterException, java.lang.Exception {
 		// 读取图片
 		Image backImage = ImagesUtils.loadImageUrl(backPicPath);
 		// 各个图片的高/宽度
@@ -166,20 +162,12 @@ public class ImagesUtils {
 				ImagesUtils.String2Color(CERTIFICATE_TEXT_COLOR), CERTIFICATE_TEXT_SIZE - 2, CERTIFICATE_TEXT_X + 140,
 				CERTNIFICATE_TEXT_Y + CERTIFICATE_TEXT_ROW_HEIGHT * 5, 1);
 		//第一次复审
-		backImage = ImagesUtils.pressText("第一次复审:", backImage, CERTIFICATE_TEXT, Font.BOLD,
+		backImage = ImagesUtils.pressText("复审记录:", backImage, CERTIFICATE_TEXT, Font.BOLD,
 				ImagesUtils.String2Color(CERTIFICATE_TEXT_TITLE_COLOR), CERTIFICATE_TEXT_SIZE - 2, CERTIFICATE_TEXT_X + 110,
 				CERTNIFICATE_TEXT_Y + 420, 1);
 		//第一次复审
 		backImage = ImagesUtils.pressText(staff.getFirstRecheckDate(), backImage, CERTIFICATE_TEXT, Font.BOLD,
 				ImagesUtils.String2Color(CERTIFICATE_TEXT_COLOR), CERTIFICATE_TEXT_SIZE - 2, CERTIFICATE_TEXT_X + 150 + 110,
-				CERTNIFICATE_TEXT_Y + 420, 1);
-		//第二次复审
-		backImage = ImagesUtils.pressText("第二次复审:", backImage, CERTIFICATE_TEXT, Font.BOLD,
-				ImagesUtils.String2Color(CERTIFICATE_TEXT_TITLE_COLOR), CERTIFICATE_TEXT_SIZE - 2, CERTIFICATE_TEXT_X + 280 + 110,
-				CERTNIFICATE_TEXT_Y + 420, 1);
-		//第二次复审
-		backImage = ImagesUtils.pressText(staff.getSecondRecheckDate(), backImage, CERTIFICATE_TEXT, Font.BOLD,
-				ImagesUtils.String2Color(CERTIFICATE_TEXT_COLOR), CERTIFICATE_TEXT_SIZE - 2, CERTIFICATE_TEXT_X + 430 + 110,
 				CERTNIFICATE_TEXT_Y + 420, 1);
 		int alphaType = BufferedImage.TYPE_INT_RGB;
 		// 画图
@@ -189,9 +177,9 @@ public class ImagesUtils {
 		graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 1));
 //		graphics2D.drawImage(headImage, CERTIFICATE_HEAD_X, CERTIFICATE_HEAD_Y, CERTIFICATE_HEAD_WIDTH, CERTIFICATE_HEAD_HEIGHT, null);
 		//生成二维码
-		Image qrCodeImage = ImagesUtils.getQrCodeImage(CERTIFICATE_QR_WIDTH, CERTIFICATE_QR_HEIGHT, qrCodeText);
+		Image qrCodeImage = ImagesUtils.getQrCodeImage(CERTIFICATE_QR_WIDTH, CERTIFICATE_QR_HEIGHT, AESUtil.encodeId(qrCodeText));
 		//头像图片
-		File aa = new File(request.getSession().getServletContext().getRealPath("/") + "/" + "upload" + File.separator + staff.getRealName() + "_" + staff.getCardNo() + ".jpg");
+		File aa = new File(request.getSession().getServletContext().getRealPath("/") + "/" + "upload" + File.separator + staff.getRealName() + "_" + staff.getCardNo().replace("T", "") + ".jpg");
 		InputStream is=new FileInputStream(aa);
 		BufferedImage bi=ImageIO.read(is);
 		Image im=(Image)bi;

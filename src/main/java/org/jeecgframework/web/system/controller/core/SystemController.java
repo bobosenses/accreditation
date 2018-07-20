@@ -219,9 +219,6 @@ public class SystemController extends BaseController {
 
 	/**
 	 *
-	 * @param request
-	 * @param comboTree
-	 * @param code
 	 * @return
 	 */
 	@RequestMapping(params = "formTree")
@@ -1525,7 +1522,7 @@ public class SystemController extends BaseController {
 	 */
 	@RequestMapping("/filedeal")
     @ResponseBody
-    public AjaxJson filedeal(HttpServletRequest request, HttpServletResponse response) throws WriterException {
+    public AjaxJson filedeal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         AjaxJson j = new AjaxJson();
         String msg="啥都没干-没传参数吧！";
         String upFlag=request.getParameter("isup");
@@ -1567,8 +1564,11 @@ public class SystemController extends BaseController {
 				//2、demo这里用的是AjaxJson对象,开发者可自定义返回对象,但是用t标签的时候路径属性名需为  obj或 filePath 或自己在标签内指定若在标签内指定则action返回路径的名称应保持一致
 	          //如果是删除操作
 				String[] info = fileName.split("_");
-				String cardNo = info[1].substring(0, info[1].length() - 4);				TSStaffEntity staff = tSStaffService.findUniqueByProperty(TSStaffEntity.class, "cardNo", cardNo);
-				getQrCodeImage(staff.getId().toString(), fileName.substring(0, fileName.length() - 4), request, response);
+				String cardNo = info[1].substring(0, info[1].length() - 4);
+				TSStaffEntity staff = tSStaffService.findUniqueByProperty(TSStaffEntity.class, "cardNo", "T"+cardNo);
+				if (staff != null) {
+					getQrCodeImage(staff.getId().toString(), fileName.substring(0, fileName.length() - 4), request, response);
+				}
 	        }else if("1".equals(delFlag)){
 	        	String path=request.getParameter("path");
 	        	String delpath=ctxPath+File.separator+path;
@@ -1599,7 +1599,7 @@ public class SystemController extends BaseController {
         return j;
     }
 
-	public void getQrCodeImage(String id,String fileName, HttpServletRequest request, HttpServletResponse response) throws WriterException, IOException {
+	public void getQrCodeImage(String id,String fileName, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		response.setDateHeader("Expires", 0L);
 		response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
 		response.addHeader("Cache-Control", "post-check=0, pre-check=0");
@@ -1609,9 +1609,14 @@ public class SystemController extends BaseController {
 		String path = "upload";
 		String name = fileName + "_print";
 		String realPath = request.getSession().getServletContext().getRealPath("/") + "/" + path + File.separator + name + ".jpg";
+		String qRName = fileName + "_qr";
+		String qrRealPath = request.getSession().getServletContext().getRealPath("/") + "/" + path + File.separator + qRName + ".jpg";
 		File file = new File(realPath);
+		File qr = new File(qrRealPath);
 		BufferedImage image = ImagesUtils.imagesSynthesis(id, staff, request);
 		ImageIO.write(image, "jpg", file);
+		BufferedImage qrImage = ImagesUtils.getQrCodeImage(100, 100, AESUtil.encodeId(id));
+		ImageIO.write(qrImage, "jpg", qr);
 	}
 	/**
 	 * 获取图片流/获取文件用于下载

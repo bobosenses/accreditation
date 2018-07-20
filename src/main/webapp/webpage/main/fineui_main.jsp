@@ -11,7 +11,7 @@
 	<meta name="keywords" content="JEECG 企业级快速开发平台">
     <meta name="description" content="JEECG 企业级快速开发平台，她采用强大代码生成，在线开发能力">
     <%--<title><t:mutiLang langKey="jeect.platform"/></title>--%>
-	<title>山西安监局制证系统</title>
+	<title>山西省特种作业人员制证管理系统</title>
     <link href="plug-in-ui/hplus/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
 	<link rel="stylesheet" href="plug-in/themes/fineui/common/css/sccl.css">
 	<link rel="stylesheet" type="text/css" href="plug-in/themes/fineui/common/skin/qingxin/skin.css" id="layout-skin"/>
