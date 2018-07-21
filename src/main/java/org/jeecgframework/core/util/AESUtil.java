@@ -110,7 +110,7 @@ public class AESUtil {
 //            byte[] decryptAES = AESUtil.decryptAES(base642Byte, aesKey2);
 //            //解密后的明文
 //            System.out.println("解密后的明文: " + new String(decryptAES));
-            String aaa = encodeId("2");
+            String aaa = encodeId("123456");
             System.out.println(aaa);
             String bbb = decodeId(aaa);
             System.out.println(bbb);
